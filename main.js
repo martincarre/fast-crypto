@@ -62,7 +62,6 @@ async function loop() {
               o: object.o,
               n: object.n,
             });
-            console.log(`Ask for ${tick.name}: ${tick.a}`);
             tick.save(function(err, tick) {
               if (err) return console.log(err);
               console.log(`[SUCCESS]: ${tick.name} added to db!`);
