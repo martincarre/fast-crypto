@@ -8,12 +8,11 @@ var tickerSchema = mongoose.Schema({
   name: String,
   a: Number,
   b: Number,
+  m: Number,
   c: Number,
   v: Number,
-  p: Number,
   l: Number,
   h: Number,
-  o: Number,
   sn: Number,
   n: Number,
   iname: String,
@@ -23,8 +22,8 @@ tickerSchema.methods.sendToCompare = function () {
   compare(this);
 }
 
-var Bitstamptick = mongoose.model('Bitstamptick', tickerSchema);
+var Bitfinextick = mongoose.model('Bitfinextick', tickerSchema);
 
 module.exports = {
-  Bitstamptick
+  Bitfinextick
 }

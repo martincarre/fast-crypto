@@ -6,15 +6,15 @@ var compare = require('../../compare').compare;
 var tickerSchema = mongoose.Schema({
   mk: String,
   name: String,
-  a: Number,
-  b: Number,
-  c: Number,
-  v: Number,
-  p: Number,
-  l: Number,
-  h: Number,
+  a: Array,
+  b: Array,
+  c: Array,
+  v: Array,
+  p: Array,
+  t: Array,
+  l: Array,
+  h: Array,
   o: Number,
-  sn: Number,
   n: Number,
   iname: String,
 });
@@ -23,8 +23,8 @@ tickerSchema.methods.sendToCompare = function () {
   compare(this);
 }
 
-var Bitstamptick = mongoose.model('Bitstamptick', tickerSchema);
+var Krakentick = mongoose.model('Krakentick', tickerSchema);
 
 module.exports = {
-  Bitstamptick
+  Krakentick
 }

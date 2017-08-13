@@ -14,6 +14,7 @@ function bitstamp(list) {
 function single(item) {
   return apiRequest('ticker', item).then((res) => {
       var result = {};
+      var timeStamp = Math.floor(new Date());
       Object.keys(res.body).forEach((k) => {
         result= {
               mk: 'bitstamp',
@@ -26,7 +27,8 @@ function single(item) {
               l: res.body.low,
               h: res.body.high,
               o: res.body.open,
-              n: res.body.timestamp,
+              sn: res.body.timestamp,
+              n: timeStamp,
         }
       });
       return result;
