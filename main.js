@@ -81,7 +81,7 @@ async function loopBS() {
           });
           loopBS();
         }
-  }, 1050); // ************  LENGTHARR IS THERE TO AVOID 429
+  }, 1100); // ************  LENGTHARR IS THERE TO AVOID 429
 };
 
 loopBS();
@@ -132,7 +132,7 @@ async function loopKR() {
           });
           loopKR();
         }
-  }, 1050); // CHANGE HERE TO ADJUST REQUEST TIMEOUT
+  }, 1100); // CHANGE HERE TO ADJUST REQUEST TIMEOUT
 };
 
 loopKR();
@@ -182,7 +182,7 @@ async function loopBF() {
           });
           loopBF();
         }
-  }, 1050); // ************  LENGTHARR IS THERE TO AVOID 429
+  }, 1100); // ************  LENGTHARR IS THERE TO AVOID 429
 };
 
 loopBF();
