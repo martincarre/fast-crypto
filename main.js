@@ -4,6 +4,7 @@ var mongoose = require('mongoose');
   mongoose.Promise = global.Promise;
 
 var bitstamp = require('./bitstamp/app.js').bitstamp;
+var Bitstamptick = require('./bitstamp/model/bitstampModel').Bitstamptick;
 
 // ******************** MONGOOSE SERVER CONNECTION HANDLER:
 
@@ -16,29 +17,14 @@ db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function() {
   console.log("CONNECTED!");
 });
-// ******************** MONGOOSE SCHEMA AND MODEL CONFIG:
-
-var tickerSchema = mongoose.Schema({
-  name: String,
-  a: Number,
-  b: Number,
-  c: Number,
-  v: Number,
-  p: Number,
-  l: Number,
-  h: Number,
-  o: Number,
-  n: Number,
-});
-
-var Ticker = mongoose.model('Ticker', tickerSchema);
 
 
-async function loop() {
+async function loopBS() {
 
   //      UNCOMMENT & ADAPT IF THE LIST GETS PUBLISHED BY BISTAMP API REST
   // var array = await getList();
   // var lengthArr = array.length
+
   setTimeout(
     async function () {
       var list = ['btcusd', 'xrpusd', 'ltcusd']; // ADAPT IF THE LIST GETS PUBLISHED BY BITSTAMP API REST
@@ -46,11 +32,11 @@ async function loop() {
         if (data.indexOf(429) > -1) {
           console.log('[ERROR]: Too many requests. Waiting until next set of request...');
           setTimeout(function () {
-            loop();
+            loopBS();
           }, 60*1000);
         } else {
           data.forEach((object) => {
-            var tick = new Ticker({
+            var tick = new Bitstamptick({
               name: object.name,
               a: object.a,
               b: object.b,
@@ -67,9 +53,9 @@ async function loop() {
               console.log(`[SUCCESS]: ${tick.name} added to db!`);
             });
           });
-          loop();
+          loopBS();
         }
-  }, 3*1000); // ************  LENGTHARR IS THERE TO AVOID 429
+  }, 1000); // ************  LENGTHARR IS THERE TO AVOID 429
 };
 
-loop();
+loopBS();
