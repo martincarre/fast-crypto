@@ -37,6 +37,7 @@ async function loopBS() {
         } else {
           data.forEach((object) => {
             var tick = new Bitstamptick({
+              mk: object.mk,
               name: object.name,
               a: object.a,
               b: object.b,
@@ -48,6 +49,7 @@ async function loopBS() {
               o: object.o,
               n: object.n,
             });
+            tick.sendToCompare();
             tick.save(function(err, tick) {
               if (err) return console.log(err);
               console.log(`[SUCCESS]: ${tick.name} added to db!`);
