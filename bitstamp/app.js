@@ -6,6 +6,8 @@ function bitstamp(list) {
   return Promise.all(list.map(single))
   .then((res) => {
     return res;
+  }).catch((err) => {
+    console.log(err);
   });
 };
 
@@ -32,7 +34,9 @@ function single(item) {
         }
       });
       return result;
-  })
+  }).catch((err) => {
+    console.log(err);
+  });
 };
 
 module.exports = {

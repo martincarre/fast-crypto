@@ -1,9 +1,9 @@
 var rq = require('request-promise');
 var fs = require('fs');
 
-var logFileName = `../logs/[BITSTAMP]${new Date().toISOString}-errorlog.txt`;
-
 function apiRequest(params, req) {
+  var date = new Date().toISOString();
+  var logFileName = '../logs/[BITSTAMP]'+date+'errorlog.txt';
   if (req) {
     var options = {
       uri: `https://www.bitstamp.net/api/v2/${params}/${req}`,
@@ -22,9 +22,8 @@ function apiRequest(params, req) {
   }).catch((err) => {
     fs.writeFile(logFileName, err, function(err) {
       if (err) return console.log(err);
-      console.log(`[ERROR][BITSTAMP]: ${logFileName} created!`);
+      console.log(`[ERROR][BITSTAMP]: log created!`);
     });
-    return err;
   });
 };
 

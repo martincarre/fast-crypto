@@ -14,6 +14,9 @@ var Krakentick = require('./kraken/model/krakenModel').Krakentick;
 var bitfinex = require('./bitfinex/app.js').bitfinex;
 var getListBF = require('./bitfinex/app.js').getListBF;
 var Bitfinextick = require('./bitfinex/model/bitfinexModel').Bitfinextick;
+// COINDESK REQUIRE:
+var coindesk = require('./coindeskIndex/app.js').coindesk;
+var Coindesktick = require('./coindeskIndex/model/coindeskModel').Coindesktick;
 
 // *********************************************************************************************************************
 // *********************************************************************************************************************
@@ -29,6 +32,38 @@ db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function() {
   console.log("CONNECTED!");
 });
+// *********************************************************************************************************************
+// *********************************************************************************************************************
+// *********************************************************************************************************************
+// *************************************** COINDESK INDEX
+
+
+async function loopCDI() {
+  setTimeout(
+    async function () {
+      var data = await coindesk();
+        if (data.name === '&#36;') {
+          var iname = 'btcusd';
+        } else {
+          var iname = 'N/A';
+        }
+        var tick = new Coindesktick({
+          mk: data.mk,
+          name: data.name,
+          c: data.c,
+          sn: data.sn,
+          n: data.n,
+          iname: iname,
+        });
+        tick.save(function(err, tick) {
+          if (err) return console.log(err);
+          console.log(`[SUCCESS][CDINDEX]: ${tick.name} added to db!`);
+        });
+      loopCDI();
+  }, 20000); //The price is updated every 60 sec. no need to get it faster. Check: https://www.coindesk.com/api/ for potential changes.
+}
+
+loopCDI();
 
 // *********************************************************************************************************************
 // *********************************************************************************************************************

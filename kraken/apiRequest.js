@@ -3,7 +3,7 @@ var fs = require('fs');
 
 function apiRequest(params, req) {
   var date = new Date().toISOString();
-  var logFileName = `../logs/[KRAKEN]${date}-errorlog.txt`;
+  var logFileName = '../logs/[KRAKEN]'+date+'errorlog.txt';
     var options = {
       uri: `https://api.kraken.com/0/public/${params}`,
       qs: req,
@@ -14,17 +14,16 @@ function apiRequest(params, req) {
     if (res.statusCode === 200 && !res.body.error.length) {
       return res;
     } else {
-      fs.writeFile(logFileName, JSON.stringify(res, null, 3), function(err) {
+      fs.writeFile(logFileName, res, function(err) {
         if (err) return console.log(err);
         console.log(`[ERROR][KRAKEN]: log created!`);
       });
     }
   }).catch((err) => {
-    fs.writeFile(logFileName, JSON.stringify(err, null, 3), function(err) {
+    fs.writeFile(logFileName, err, function(err) {
       if (err) return console.log(err);
       console.log(`[ERROR][KRAKEN]: log created!`);
     });
-    return err;
   });
 };
 

@@ -1,19 +1,21 @@
 var mongoose = require('mongoose');
   mongoose.Promise = global.Promise;
+  require('mongoose-currency').loadType(mongoose);
+var Currency = mongoose.Types.Currency;
 
 var compare = require('../../compare').compare;
 
 var tickerSchema = mongoose.Schema({
   mk: String,
   name: String,
-  a: Number,
-  b: Number,
-  c: Number,
+  a: Currency,
+  b: Currency,
+  c: Currency,
   v: Number,
   p: Number,
-  l: Number,
-  h: Number,
-  o: Number,
+  l: Currency,
+  h: Currency,
+  o: Currency,
   sn: Number,
   n: Number,
   iname: String,

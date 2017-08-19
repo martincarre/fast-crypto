@@ -8,14 +8,8 @@ var compare = require('../../compare').compare;
 var tickerSchema = mongoose.Schema({
   mk: String,
   name: String,
-  a: Currency,
-  b: Currency,
-  m: Currency,
   c: Currency,
-  v: Number,
-  l: Currency,
-  h: Currency,
-  sn: Number,
+  sn: Date,
   n: Number,
   iname: String,
 });
@@ -24,8 +18,8 @@ tickerSchema.methods.sendToCompare = function () {
   compare(this);
 }
 
-var Bitfinextick = mongoose.model('Bitfinextick', tickerSchema);
+var Coindesktick = mongoose.model('CoindeskBPI', tickerSchema);
 
 module.exports = {
-  Bitfinextick
+  Coindesktick
 }

@@ -1,5 +1,7 @@
 var mongoose = require('mongoose');
   mongoose.Promise = global.Promise;
+  require('mongoose-currency').loadType(mongoose);
+var Currency = mongoose.Types.Currency;
 
 var compare = require('../../compare').compare;
 
@@ -14,7 +16,7 @@ var tickerSchema = mongoose.Schema({
   t: Array,
   l: Array,
   h: Array,
-  o: Number,
+  o: Currency,
   n: Number,
   iname: String,
 });

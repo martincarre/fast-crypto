@@ -12,6 +12,8 @@ function getListBF() {
       if (content.indexOf('usd') !== -1 ) tickerArr.push(content);
     });
     return tickerArr;
+  }).catch((err) => {
+    console.log(err);
   });
 };
 
@@ -45,7 +47,9 @@ function single(item) {
         }
       });
       return result;
-  })
+  }).catch((err) => {
+    console.log(err);
+  });
 };
 
 module.exports = {
