@@ -20,6 +20,9 @@ var Coindesktick = require('./coindeskIndex/model/coindeskModel').Coindesktick;
 // ITBIT REQUIRE:
 var itbit = require('./itbit/app.js').itbit;
 var Itbittick = require('./itbit/model/itbitModel').Itbittick;
+// CRYPTONATOR REQUIRE:
+var cryptonator = require('./cryptonatorindex/app.js').cryptonator;
+var Cryptonatortick = require('./cryptonatorindex/model/crytopnatorModel').Cryptonatortick;
 
 // *********************************************************************************************************************
 // *********************************************************************************************************************
@@ -35,87 +38,105 @@ db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function() {
   console.log("CONNECTED!");
 });
+
+// *********************************************************************************************************************
+// *********************************************************************************************************************
+// *********************************************************************************************************************
+// *************************************** CRYPTONATOR INDEX
+
+
+setInterval(async function () {
+  var list = ['btc-usd'];
+  var data = await cryptonator(list);
+      data.forEach((object) => {
+        if (object.name === 'BTCUSD') {
+          var iname = 'btcusd';
+        } else {
+          var iname = 'N/A';
+        }
+        var tick = new Cryptonatortick({
+          mk: object.mk,
+          name: object.name,
+          c: object.c,
+          v: object.v,
+          sn: object.sn,
+          n: object.n,
+          iname: iname,
+          base: object.markets,
+        });
+        console.log(JSON.stringify(tick, null, 3));
+        tick.save(function(err, tick) {
+          if (err) return console.log(err);
+          console.log(`[SUCCESS][CRYPTOBPI]: ${tick.name} added to db!`);
+        });
+      });
+
+}, 30000);
+
 // *********************************************************************************************************************
 // *********************************************************************************************************************
 // *********************************************************************************************************************
 // *************************************** COINDESK INDEX
 
 
-async function loopCDI() {
-  setTimeout(
-    async function () {
-      var data = await coindesk();
-        if (data.name === '&#36;') {
-          var iname = 'btcusd';
-        } else {
-          var iname = 'N/A';
-        }
-        var tick = new Coindesktick({
-          mk: data.mk,
-          name: data.name,
-          c: data.c,
-          sn: data.sn,
-          n: data.n,
-          iname: iname,
-        });
-        tick.save(function(err, tick) {
-          if (err) return console.log(err);
-          console.log(`[SUCCESS][CDINDEX]: ${tick.name} added to db!`);
-        });
-      loopCDI();
-  }, 20000); //The price is updated every 60 sec. no need to get it faster. Check: https://www.coindesk.com/api/ for potential changes.
-}
-
-loopCDI();
+setInterval(async function () {
+  var data = await coindesk();
+    if (data.name === '&#36;') {
+      var iname = 'btcusd';
+    } else {
+      var iname = 'N/A';
+    }
+    var tick = new Coindesktick({
+      mk: data.mk,
+      name: data.name,
+      c: data.c,
+      sn: data.sn,
+      n: data.n,
+      iname: iname,
+    });
+    tick.save(function(err, tick) {
+      if (err) return console.log(err);
+      console.log(`[SUCCESS][CDINDEX]: ${tick.name} added to db!`);
+    });
+}, 20000);
 
 // *********************************************************************************************************************
 // *********************************************************************************************************************
 // *********************************************************************************************************************
 // *************************************** BITSTAMP
 
-async function loopBS() {
-
-  //      UNCOMMENT & ADAPT IF THE LIST GETS PUBLISHED BY BISTAMP API REST
-  // var array = await getList();
-  // var lengthArr = array.length
-
-  setTimeout(
-    async function () {
-      var list = ['btcusd']; //, 'xrpusd', 'ltcusd']; // ADAPT IF THE LIST GETS PUBLISHED BY BITSTAMP API REST
-      var data = await bitstamp(list);
-          data.forEach((object) => {
-            if (object.name === 'btcusd') {
-              var iname = 'btcusd';
-            } else {
-              var iname = 'N/A';
-            }
-            var tick = new Bitstamptick({
-              mk: object.mk,
-              name: object.name,
-              a: object.a,
-              b: object.b,
-              c: object.c,
-              v: object.v,
-              p: object.p,
-              l: object.l,
-              h: object.h,
-              o: object.o,
-              sn: object.sn,
-              n: object.n,
-              iname: iname,
-            });
-            // console.log(JSON.stringify(tick, null, 3));
-            // tick.sendToCompare();
-            tick.save(function(err, tick) {
-              if (err) return console.log(err);
-              console.log(`[SUCCESS][BITSTAMP]: ${tick.name} added to db!`);
-            });
-          });
-          loopBS();
-  }, 1100); // ************  LENGTHARR IS THERE TO AVOID 429
-};
-
-loopBS();
+setInterval(async function () {
+  var list = ['btcusd']; //, 'xrpusd', 'ltcusd']; // ADAPT IF THE LIST GETS PUBLISHED BY BITSTAMP API REST
+  var data = await bitstamp(list);
+      data.forEach((object) => {
+        if (object.name === 'btcusd') {
+          var iname = 'btcusd';
+        } else {
+          var iname = 'N/A';
+        }
+        var tick = new Bitstamptick({
+          mk: object.mk,
+          name: object.name,
+          a: object.a,
+          b: object.b,
+          c: object.c,
+          v: object.v,
+          p: object.p,
+          l: object.l,
+          h: object.h,
+          o: object.o,
+          sn: object.sn,
+          n: object.n,
+          iname: iname,
+        });
+        // console.log(JSON.stringify(tick, null, 3));
+        // tick.sendToCompare();
+        tick.save(function(err, tick) {
+          if (err) return console.log(err);
+          console.log(`[SUCCESS][BITSTAMP]: ${tick.name} added to db!`);
+        });
+      });
+}, 1100);
 
 
 // *********************************************************************************************************************
@@ -123,84 +144,80 @@ loopBS();
 // *********************************************************************************************************************
 // *************************************** KRAKEN
 
-async function loopKR() {
-  setTimeout(
-    async function () {
-      var list = ['XBTUSD']; //await getListKR();
-      var data = await kraken(list);
-          data.forEach((object) => {
-            if (object.name === 'XXBTZUSD') {
-              var iname =  'btcusd'
-            } else {
-              var iname = 'N/A' };
-            var tick = new Krakentick({
-              mk: object.mk,
-              name: object.name,
-              a: object.a,
-              b: object.b,
-              c: object.c,
-              v: object.v,
-              p: object.p,
-              t: object.t,
-              l: object.l,
-              h: object.h,
-              o: object.o,
-              n: object.n,
-              iname: iname,
-            });
-            // console.log(JSON.stringify(tick, null, 3));
-            // tick.sendToCompare();
-            tick.save(function(err, tick) {
-              if (err) return console.log(err);
-              console.log(`[SUCCESS][KRAKEN]: ${tick.name} added to db!`);
-            });
-          });
-          loopKR();
-  }, 1100); // CHANGE HERE TO ADJUST REQUEST TIMEOUT
-};
+setInterval(async function () {
+  var list = ['XBTUSD']; //await getListKR();
+  var data = await kraken(list);
+      data.forEach((object) => {
+        if (object.name === 'XXBTZUSD') {
+          var iname =  'btcusd'
+        } else {
+          var iname = 'N/A' };
+        var tick = new Krakentick({
+          mk: object.mk,
+          name: object.name,
+          a: object.a,
+          b: object.b,
+          c: object.c,
+          v: object.v,
+          p: object.p,
+          t: object.t,
+          l: object.l,
+          h: object.h,
+          o: object.o,
+          n: object.n,
+          iname: iname,
+          aAmt: object.aAmt,
+          bAmt: object.bAmt,
+          cAmt: object.cAmt,
+          v24: object.v24,
+          h24: object.h24,
+          l24: object.l24,
+          p24: object.p24,
+        });
+        // console.log(JSON.stringify(tick, null, 3));
+        // tick.sendToCompare();
+        tick.save(function(err, tick) {
+          if (err) return console.log(err);
+          console.log(`[SUCCESS][KRAKEN]: ${tick.name} added to db!`);
+        });
+      });
+}, 2500);
 
-loopKR();
 
 // *********************************************************************************************************************
 // *********************************************************************************************************************
 // *********************************************************************************************************************
 // *************************************** BITFINEX
 
-async function loopBF() {
-  setTimeout(
-    async function () {
-      var list = ['btcusd']; //await getList();
-      var data = await bitfinex(list);
-          data.forEach((object) => {
-            if (object.name === 'btcusd') {
-              var iname = 'btcusd';
-            } else {
-              var iname = 'N/A';
-            }
-            var tick = new Bitfinextick({
-              mk: object.mk,
-              name: object.name,
-              a: object.a,
-              b: object.b,
-              m: object.m,
-              c: object.c,
-              v: object.v,
-              l: object.l,
-              h: object.h,
-              sn: object.sn,
-              n: object.n,
-              iname: iname,
-            });
-            tick.save(function(err, tick) {
-              if (err) return console.log(err);
-              console.log(`[SUCCESS][BITFINEX]: ${tick.name} added to db!`);
-            });
-          });
-          loopBF();
-  }, 1100); // ************  LENGTHARR IS THERE TO AVOID 429
-};
-
-loopBF();
+setInterval(async function () {
+  var list = ['btcusd']; //await getList();
+  var data = await bitfinex(list);
+      data.forEach((object) => {
+        if (object.name === 'btcusd') {
+          var iname = 'btcusd';
+        } else {
+          var iname = 'N/A';
+        }
+        var tick = new Bitfinextick({
+          mk: object.mk,
+          name: object.name,
+          a: object.a,
+          b: object.b,
+          m: object.m,
+          c: object.c,
+          v: object.v,
+          l: object.l,
+          h: object.h,
+          sn: object.sn,
+          n: object.n,
+          iname: iname,
+        });
+        tick.save(function(err, tick) {
+          if (err) return console.log(err);
+          console.log(`[SUCCESS][BITFINEX]: ${tick.name} added to db!`);
+        });
+      });
+}, 4000);
 
 
 // *********************************************************************************************************************
@@ -208,51 +225,42 @@ loopBF();
 // *********************************************************************************************************************
 // *************************************** ITBIT
 
-async function loopIT() {
 
-  //      UNCOMMENT & ADAPT IF THE LIST GETS PUBLISHED BY BISTAMP API REST
-  // var array = await getList();
-  // var lengthArr = array.length
+setInterval(async function () {
+  var list = ['XBTUSD']; //, 'xrpusd', 'ltcusd']; // ADAPT IF THE LIST GETS PUBLISHED BY BITSTAMP API REST
+  var data = await itbit(list);
+      data.forEach((object) => {
+        if (object.name === 'XBTUSD') {
+          var iname = 'btcusd';
+        } else {
+          var iname = 'N/A';
+        }
+        var tick = new Itbittick({
+          mk: object.mk,
+          name: object.name,
+          a: object.a,
+          b: object.b,
+          c: object.c,
+          v: object.v,
+          p: object.p,
+          l: object.l,
+          h: object.h,
+          o: object.o,
+          sn: object.sn,
+          n: object.n,
+          iname: iname,
+          aAmt: object.aAmt,
+          bAmt: object.bAmt,
+          cAmt: object.cAmt,
+          v24: object.v24,
+          h24: object.h24,
+          l24: object.l24,
+          p24: object.p24,
+        });
+        tick.save(function(err, tick) {
+          if (err) return console.log(err);
+          console.log(`[SUCCESS][ITBIT]: ${tick.name} added to db!`);
+        });
+      });
 
-  setTimeout(
-    async function () {
-      var list = ['XBTUSD']; //, 'xrpusd', 'ltcusd']; // ADAPT IF THE LIST GETS PUBLISHED BY BITSTAMP API REST
-      var data = await itbit(list);
-          data.forEach((object) => {
-            if (object.name === 'XBTUSD') {
-              var iname = 'btcusd';
-            } else {
-              var iname = 'N/A';
-            }
-            var tick = new Itbittick({
-              mk: object.mk,
-              name: object.name,
-              a: object.a,
-              b: object.b,
-              c: object.c,
-              v: object.v,
-              p: object.p,
-              l: object.l,
-              h: object.h,
-              o: object.o,
-              sn: object.sn,
-              n: object.n,
-              iname: iname,
-              aAmt: object.aAmt,
-              bAmt: object.bAmt,
-              lAmt: object.lAmt,
-              v24: object.v24,
-              h24: object.h24,
-              l24: object.l24,
-              p24: object.p24,
-            });
-            tick.save(function(err, tick) {
-              if (err) return console.log(err);
-              console.log(`[SUCCESS][ITBIT]: ${tick.name} added to db!`);
-            });
-          });
-          loopIT();
-  }, 6000); // ************  GETS UPDATED EVERY 6 SEC ACORDING TO THE SITE
-};
-
-loopIT();
+}, 6000);

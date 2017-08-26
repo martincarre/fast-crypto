@@ -32,7 +32,7 @@ function single(item) {
               n: timeStamp,
               aAmt: res.body.askAmt,
               bAmt: res.body.bidAmt,
-              lAmt: res.body.lastAmt,
+              cAmt: res.body.lastAmt,
               v24: res.body.volume24h,
               h24: res.body.high24h,
               l24: res.body.low24h,
@@ -43,8 +43,6 @@ function single(item) {
     console.log(err);
   });
 };
-
-itbit(['XBTUSD']);
 
 module.exports = {
   itbit

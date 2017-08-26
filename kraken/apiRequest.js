@@ -34,7 +34,7 @@ function apiRequest(params, req) {
 //     if (res.body.error.length) {
 //       console.log(JSON.stringify(res.body.error, null, 3));
 //     } else {
-//       console.log('OK!');
+//       console.log(JSON.stringify(res.body.result.XXBTZUSD.a[0], null, 3));
 //     }
 //     }).catch((err) => {
 //       console.log(JSON.stringify(err, null, 3));

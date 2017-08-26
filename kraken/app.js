@@ -37,18 +37,25 @@ function single(item) {
       var timeStamp = Math.floor(new Date());
       Object.keys(res.body.result).forEach((k) => {
         result= {
-              mk: 'kraken',
-              name: k,
-              a: res.body.result[k].a,
-              b: res.body.result[k].b,
-              c: res.body.result[k].c,
-              v: res.body.result[k].v,
-              p: res.body.result[k].p,
-              t: res.body.result[k].t,
-              l: res.body.result[k].l,
-              h: res.body.result[k].h,
-              o: res.body.result[k].o,
-              n: timeStamp,
+          mk: 'kraken',
+          name: k,
+          a: res.body.result[k].a[0],
+          b: res.body.result[k].b[0],
+          c: res.body.result[k].c[0],
+          v: res.body.result[k].v[0],
+          p: res.body.result[k].p[0],
+          t: res.body.result[k].t[0],
+          l: res.body.result[k].l[0],
+          h: res.body.result[k].h[0],
+          o: res.body.result[k].o[0],
+          n: timeStamp,
+          aAmt: res.body.result[k].a[2],
+          bAmt: res.body.result[k].b[2],
+          cAmt: res.body.result[k].c[1],
+          v24: res.body.result[k].v[1],
+          h24: res.body.result[k].h[1],
+          l24: res.body.result[k].l[1],
+          p24: res.body.result[k].p[1],
         }
       });
       return result;

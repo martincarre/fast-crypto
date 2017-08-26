@@ -8,32 +8,20 @@ var compare = require('../../compare').compare;
 var tickerSchema = mongoose.Schema({
   mk: String,
   name: String,
-  a: Currency,
-  b: Currency,
   c: Currency,
   v: Number,
-  p: Number,
-  l: Currency,
-  h: Currency,
-  o: Currency,
-  sn: Date,
+  sn: Number,
   n: Number,
   iname: String,
-  aAmt: Number,
-  bAmt: Number,
-  cAmt: Number,
-  v24: Currency,
-  h24: Currency,
-  l24: Currency,
-  p24: Currency,
+  base: Object,
 });
 
 tickerSchema.methods.sendToCompare = function () {
   compare(this);
 }
 
-var Itbittick = mongoose.model('Itbittick', tickerSchema);
+var Cryptonatortick = mongoose.model('Cryptonatortick', tickerSchema);
 
 module.exports = {
-  Itbittick
+  Cryptonatortick
 }
