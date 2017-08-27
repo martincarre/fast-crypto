@@ -1,9 +1,13 @@
 var rq = require('request-promise');
 var fs = require('fs');
 
-function apiRequest() {
+var date = new Date().toISOString();
+var logFileName = '../logs/[BITTREX]'+date+'errorlog.txt';
+
+function apiRequest(req) {
     var options = {
-      uri: `https://api.blockchain.info/stats`,
+      uri: `https://bittrex.com/api/v1.1/public/getmarketsummary`,
+      qs: req,
       json: true,
       resolveWithFullResponse: true
     }
@@ -12,8 +16,8 @@ function apiRequest() {
   }).catch((err) => {
     fs.writeFile(logFileName, err, function(err) {
       if (err) return console.log(err);
+      console.log(`[ERROR][BITTREX]: log created!`);
     });
-    return err;
   });
 };
 

@@ -26,6 +26,9 @@ var Cryptonatortick = require('./cryptonatorindex/model/crytopnatorModel').Crypt
 // BLOCKCHAININFO REQUIRE:
 var blockchaininfo = require('./blockchaininfo/app.js').blockchaininfo;
 var Blockchaininfotick = require('./blockchaininfo/model/blockchaininfoModel').Blockchaininfotick;
+// BITTREX REQUIRE:
+var bittrex = require('./bittrex/app.js').bittrex;
+var Bittrextick = require('./bittrex/model/bittrexModel').Bittrextick;
 
 // *********************************************************************************************************************
 // *********************************************************************************************************************
@@ -307,3 +310,43 @@ setInterval(async function () {
       });
 
 }, 6000);
+
+// *********************************************************************************************************************
+// *********************************************************************************************************************
+// *********************************************************************************************************************
+// *************************************** BITTREX
+
+
+setInterval(async function () {
+  var list = ['USDT-BTC'];
+  var data = await bittrex(list);
+      data.forEach((object) => {
+        if (object.name === 'USDT-BTC') {
+          var iname = 'btcusd';
+        } else {
+          var iname = 'N/A';
+        }
+        var tick = new Bittrextick({
+          mk: object.mk,
+          name: object.name,
+          a: object.a,
+          b: object.b,
+          c: object.c,
+          v: object.v,
+          p: object.p,
+          l: object.l,
+          h: object.h,
+          o: object.o,
+          sn: object.sn,
+          n: object.n,
+          iname: iname,
+          OpenBuyOrders: object.OpenBuyOrders,
+          OpenSellOrders: object.OpenSellOrders,
+        });
+        tick.save(function(err, tick) {
+          if (err) return console.log(err);
+          console.log(`[SUCCESS][BITTREX]: ${tick.name} added to db!`);
+        });
+      });
+
+}, 1100);
