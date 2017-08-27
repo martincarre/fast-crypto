@@ -23,6 +23,9 @@ var Itbittick = require('./itbit/model/itbitModel').Itbittick;
 // CRYPTONATOR REQUIRE:
 var cryptonator = require('./cryptonatorindex/app.js').cryptonator;
 var Cryptonatortick = require('./cryptonatorindex/model/crytopnatorModel').Cryptonatortick;
+// BLOCKCHAININFO REQUIRE:
+var blockchaininfo = require('./blockchaininfo/app.js').blockchaininfo;
+var Blockchaininfotick = require('./blockchaininfo/model/blockchaininfoModel').Blockchaininfotick;
 
 // *********************************************************************************************************************
 // *********************************************************************************************************************
@@ -38,6 +41,47 @@ db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function() {
   console.log("CONNECTED!");
 });
+
+// *********************************************************************************************************************
+// *********************************************************************************************************************
+// *********************************************************************************************************************
+// *************************************** BLOCKCHAININFO
+
+
+setInterval(async function () {
+  var data = await blockchaininfo();
+  var iname = 'btcusd';
+  var tick = new Blockchaininfotick({
+    mk: data.mk,
+    c: data.c,
+    hash_rate: data.hash_rate,
+    total_fees_btc: data.total_fees_btc,
+    n_btc_mined: data.n_btc_mined,
+    n_tx: data.n_tx,
+    n_blocks_mined: data.n_blocks_mined,
+    minutes_between_blocks: data.minutes_between_blocks,
+    totalbc: data.totalbc,
+    n_blocks_total: data.n_blocks_total,
+    estimated_transaction_volume_usd: data.estimated_transaction_volume_usd,
+    blocks_size: data.blocks_size,
+    miners_revenue_usd: data.miners_revenue_usd,
+    nextretarget: data.nextretarget,
+    difficulty: data.difficulty,
+    estimated_btc_sent: data.estimated_btc_sent,
+    miners_revenue_btc: data.miners_revenue_btc,
+    total_btc_sent: data.total_btc_sent,
+    trade_volume_btc: data.trade_volume_btc,
+    trade_volume_usd: data.trade_volume_usd,
+    sn: data.sn,
+    n: data.n,
+    iname: iname,
+  });
+    tick.save(function(err, tick) {
+      if (err) return console.log(err);
+      console.log(`[SUCCESS][BLOCKHAININFO]: ${tick.name} added to db!`);
+    });
+}, 20000);
+
 
 // *********************************************************************************************************************
 // *********************************************************************************************************************
@@ -64,14 +108,13 @@ setInterval(async function () {
           iname: iname,
           base: object.markets,
         });
-        console.log(JSON.stringify(tick, null, 3));
         tick.save(function(err, tick) {
           if (err) return console.log(err);
           console.log(`[SUCCESS][CRYPTOBPI]: ${tick.name} added to db!`);
         });
       });
 
-}, 30000);
+}, 20000);
 
 // *********************************************************************************************************************
 // *********************************************************************************************************************
