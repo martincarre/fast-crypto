@@ -28,23 +28,6 @@ function apiRequest(params, req) {
   });
 };
 
-// function loop() {
-//   setTimeout(function () {
-//     apiRequest('Ticker', {pair: 'XBTUSD'}).then((res) => {
-//     if (res.body.error.length) {
-//       console.log(JSON.stringify(res.body.error, null, 3));
-//     } else {
-//       console.log(JSON.stringify(res.body.result.XXBTZUSD.a[0], null, 3));
-//     }
-//     }).catch((err) => {
-//       console.log(JSON.stringify(err, null, 3));
-//     });
-//     loop();
-//
-//   }, 1100);
-// }
-//
-// loop();
 
 module.exports = {
   apiRequest

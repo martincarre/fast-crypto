@@ -81,7 +81,7 @@ setInterval(async function () {
   });
     tick.save(function(err, tick) {
       if (err) return console.log(err);
-      console.log(`[SUCCESS][BLOCKHAININFO]: ${tick.name} added to db!`);
+      console.log(`[SUCCESS][BLOCKHAININFO]: ${tick.iname} added to db!`);
     });
 }, 20000);
 
@@ -227,7 +227,7 @@ setInterval(async function () {
           console.log(`[SUCCESS][KRAKEN]: ${tick.name} added to db!`);
         });
       });
-}, 2500);
+}, 1500);
 
 
 // *********************************************************************************************************************
@@ -263,7 +263,7 @@ setInterval(async function () {
           console.log(`[SUCCESS][BITFINEX]: ${tick.name} added to db!`);
         });
       });
-}, 4000);
+}, 1500);
 
 
 // *********************************************************************************************************************

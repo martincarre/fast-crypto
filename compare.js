@@ -1,15 +1,22 @@
-function compare(data) {
-  if (data.mk === 'bitstamp' && data.name === 'btcusd') {
-    var bsObj = data;
-    console.log(JSON.stringify(data, null, 3));
-  } else if (data.mk === 'bitfinex') {
-    var bfObj = data;
-  } else if (data.mk === 'kraken' && data.name === 'XBTUSD') {
-    var krObj = data;
-    console.log(JSON.stringify(data, null, 3));
-  }
-}
+var mongo = require('mongodb');
+var mongoose = require('mongoose');
+  mongoose.Promise = global.Promise;
+var server = mongoose.connect('mongodb://localhost/cryptoCollection', {
+  useMongoClient: true,
+});
+var Bitfinextick = require('./bitfinex/model/bitfinexModel').Bitfinextick;
+var now = Math.floor(new Date()) / 1000 ;
 
-module.exports = {
-  compare
-}
+var db = mongoose.connection;
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', function() {
+});
+
+Bitfinextick.find({
+  iname: 'btcusd',
+  sn: { $gt: now - 3600, $lt: now}
+}).then((Bitfinexticks) => {
+ Bitfinexticks.forEach((object) => {
+   
+ })
+});
