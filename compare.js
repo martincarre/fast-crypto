@@ -16,7 +16,12 @@ Bitfinextick.find({
   iname: 'btcusd',
   sn: { $gt: now - 3600, $lt: now}
 }).then((Bitfinexticks) => {
- Bitfinexticks.forEach((object) => {
-   
- })
+  for (var i = 0; i < Bitfinexticks.length -1; i++) {
+    if (i === 0) {
+      console.log('First iteration');
+    } else {
+    var logReturn = ((Bitfinexticks[i].c/Bitfinexticks[i - 1].c) - 1) * 100 // TO ADAPT TO LOG RETURN CF WIKIPEDIA ON LOGS
+    console.log(`${change}%`);
+    }
+  }
 });
