@@ -2,7 +2,7 @@ var rq = require('request-promise');
 var fs = require('fs');
 
 var date = new Date().toISOString();
-var logFileName = '../logs/[BITTREX]'+date+'errorlog.txt';
+var logFileName = './../logs/[BITTREX]'+date+'errorlog.txt';
 
 function apiRequest(req) {
     var options = {

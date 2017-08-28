@@ -2,7 +2,7 @@ var rq = require('request-promise');
 var fs = require('fs');
 
 var date = new Date().toISOString();
-var logFileName = '../logs/[BITSTAMP]'+date+'errorlog.txt';
+var logFileName = './../logs/[BITSTAMP]'+date+'errorlog.txt';
 
 function apiRequest(params, req) {
   if (req) {
