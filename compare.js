@@ -29,7 +29,7 @@ setInterval(function () {
       retArr.push(logReturn);
       }
     }
-    volat = math.std(retArr) * 100;
+    volat = math.std(retArr) * math.sqrt(365) * 100;
     console.log(`Volatility over the past 24hours: ${volat}%`);
   });
 }, 1500);

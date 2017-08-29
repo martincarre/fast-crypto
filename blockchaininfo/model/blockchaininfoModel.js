@@ -3,7 +3,7 @@ var mongoose = require('mongoose');
   require('mongoose-currency').loadType(mongoose);
 var Currency = mongoose.Types.Currency;
 
-var compare = require('../../compare').compare;
+// var compare = require('../../compare').compare;
 
 var tickerSchema = mongoose.Schema({
   mk: String,
@@ -31,9 +31,9 @@ var tickerSchema = mongoose.Schema({
   iname: String,
 });
 
-tickerSchema.methods.sendToCompare = function () {
-  compare(this);
-}
+// tickerSchema.methods.sendToCompare = function () {
+//   compare(this);
+// }
 
 var Blockchaininfotick = mongoose.model('Blockchaininfo', tickerSchema);
 
