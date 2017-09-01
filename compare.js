@@ -16,7 +16,7 @@ setInterval(function () {
   var now = Math.floor(new Date()) / 1000 ;
   Bitfinextick.find({
     iname: 'btcusd',
-    sn: { $gt: now - 86400, $lt: now}
+    sn: { $gt: now - 172800, $lt: now}
   }).then((Bitfinexticks) => {
     var retArr = [];
     var volat = 0;
@@ -30,6 +30,6 @@ setInterval(function () {
       }
     }
     volat = math.std(retArr) * math.sqrt(365) * 100;
-    console.log(`Volatility over the past 24hours: ${volat}%`);
+    console.log(`[SIG][48H]: ${volat}%`);
   });
-}, 1500);
+}, 4000);
