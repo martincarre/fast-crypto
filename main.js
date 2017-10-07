@@ -1,7 +1,7 @@
 var fs = require('fs');
 var mongo = require('mongodb');
 var mongoose = require('mongoose');
-  mongoose.Promise = global.Promise;
+mongoose.Promise = global.Promise;
 
 // BITSTAMP REQUIRE:
 var bitstamp = require('./bitstamp/app.js').bitstamp;
@@ -22,10 +22,12 @@ var itbit = require('./itbit/app.js').itbit;
 var Itbittick = require('./itbit/model/itbitModel').Itbittick;
 // CRYPTONATOR REQUIRE:
 var cryptonator = require('./cryptonatorindex/app.js').cryptonator;
-var Cryptonatortick = require('./cryptonatorindex/model/crytopnatorModel').Cryptonatortick;
+var Cryptonatortick = require('./cryptonatorindex/model/crytopnatorModel')
+  .Cryptonatortick;
 // BLOCKCHAININFO REQUIRE:
 var blockchaininfo = require('./blockchaininfo/app.js').blockchaininfo;
-var Blockchaininfotick = require('./blockchaininfo/model/blockchaininfoModel').Blockchaininfotick;
+var Blockchaininfotick = require('./blockchaininfo/model/blockchaininfoModel')
+  .Blockchaininfotick;
 // BITTREX REQUIRE:
 var bittrex = require('./bittrex/app.js').bittrex;
 var Bittrextick = require('./bittrex/model/bittrexModel').Bittrextick;
@@ -36,13 +38,13 @@ var Bittrextick = require('./bittrex/model/bittrexModel').Bittrextick;
 // *************************************** MONGOOSE SERVER CONNECTION HANDLER:
 
 var server = mongoose.connect('mongodb://localhost/cryptoCollection', {
-  useMongoClient: true,
+  useMongoClient: true
 });
 
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function() {
-  console.log("CONNECTED!");
+  console.log('CONNECTED!');
 });
 
 // *********************************************************************************************************************
@@ -50,8 +52,7 @@ db.once('open', function() {
 // *********************************************************************************************************************
 // *************************************** BLOCKCHAININFO
 
-
-setInterval(async function () {
+setInterval(async function() {
   var data = await blockchaininfo();
   var iname = 'btcusd';
   var tick = new Blockchaininfotick({
@@ -77,46 +78,43 @@ setInterval(async function () {
     trade_volume_usd: data.trade_volume_usd,
     sn: data.sn,
     n: data.n,
-    iname: iname,
+    iname: iname
   });
-    tick.save(function(err, tick) {
-      if (err) return console.log(err);
-      console.log(`[SUCCESS][BLOCKHAININFO]: ${tick.iname} added to db!`);
-    });
+  tick.save(function(err, tick) {
+    if (err) return console.log(err);
+    console.log(`[SUCCESS][BLOCKHAININFO]: ${tick.iname} added to db!`);
+  });
 }, 20000);
-
 
 // *********************************************************************************************************************
 // *********************************************************************************************************************
 // *********************************************************************************************************************
 // *************************************** CRYPTONATOR INDEX
 
-
-setInterval(async function () {
+setInterval(async function() {
   var list = ['btc-usd'];
   var data = await cryptonator(list);
-      data.forEach((object) => {
-        if (object.name === 'BTCUSD') {
-          var iname = 'btcusd';
-        } else {
-          var iname = 'N/A';
-        }
-        var tick = new Cryptonatortick({
-          mk: object.mk,
-          name: object.name,
-          c: object.c,
-          v: object.v,
-          sn: object.sn,
-          n: object.n,
-          iname: iname,
-          base: object.markets,
-        });
-        tick.save(function(err, tick) {
-          if (err) return console.log(err);
-          console.log(`[SUCCESS][CRYPTOBPI]: ${tick.name} added to db!`);
-        });
-      });
-
+  data.forEach(object => {
+    if (object.name === 'BTCUSD') {
+      var iname = 'btcusd';
+    } else {
+      var iname = 'N/A';
+    }
+    var tick = new Cryptonatortick({
+      mk: object.mk,
+      name: object.name,
+      c: object.c,
+      v: object.v,
+      sn: object.sn,
+      n: object.n,
+      iname: iname,
+      base: object.markets
+    });
+    tick.save(function(err, tick) {
+      if (err) return console.log(err);
+      console.log(`[SUCCESS][CRYPTOBPI]: ${tick.name} added to db!`);
+    });
+  });
 }, 20000);
 
 // *********************************************************************************************************************
@@ -124,26 +122,25 @@ setInterval(async function () {
 // *********************************************************************************************************************
 // *************************************** COINDESK INDEX
 
-
-setInterval(async function () {
+setInterval(async function() {
   var data = await coindesk();
-    if (data.name === '&#36;') {
-      var iname = 'btcusd';
-    } else {
-      var iname = 'N/A';
-    }
-    var tick = new Coindesktick({
-      mk: data.mk,
-      name: data.name,
-      c: data.c,
-      sn: data.sn,
-      n: data.n,
-      iname: iname,
-    });
-    tick.save(function(err, tick) {
-      if (err) return console.log(err);
-      console.log(`[SUCCESS][CDINDEX]: ${tick.name} added to db!`);
-    });
+  if (data.name === '&#36;') {
+    var iname = 'btcusd';
+  } else {
+    var iname = 'N/A';
+  }
+  var tick = new Coindesktick({
+    mk: data.mk,
+    name: data.name,
+    c: data.c,
+    sn: data.sn,
+    n: data.n,
+    iname: iname
+  });
+  tick.save(function(err, tick) {
+    if (err) return console.log(err);
+    console.log(`[SUCCESS][CDINDEX]: ${tick.name} added to db!`);
+  });
 }, 20000);
 
 // *********************************************************************************************************************
@@ -151,164 +148,160 @@ setInterval(async function () {
 // *********************************************************************************************************************
 // *************************************** BITSTAMP
 
-setInterval(async function () {
+setInterval(async function() {
   var list = ['btcusd']; //, 'xrpusd', 'ltcusd']; // ADAPT IF THE LIST GETS PUBLISHED BY BITSTAMP API REST
   var data = await bitstamp(list);
-      data.forEach((object) => {
-        if (object.name === 'btcusd') {
-          var iname = 'btcusd';
-        } else {
-          var iname = 'N/A';
-        }
-        var tick = new Bitstamptick({
-          mk: object.mk,
-          name: object.name,
-          a: object.a,
-          b: object.b,
-          c: object.c,
-          v: object.v,
-          p: object.p,
-          l: object.l,
-          h: object.h,
-          o: object.o,
-          sn: object.sn,
-          n: object.n,
-          iname: iname,
-        });
-        // console.log(JSON.stringify(tick, null, 3));
-        // tick.sendToCompare();
-        tick.save(function(err, tick) {
-          if (err) return console.log(err);
-          console.log(`[SUCCESS][BITSTAMP]: ${tick.name} added to db!`);
-        });
-      });
+  data.forEach(object => {
+    if (object.name === 'btcusd') {
+      var iname = 'btcusd';
+    } else {
+      var iname = 'N/A';
+    }
+    var tick = new Bitstamptick({
+      mk: object.mk,
+      name: object.name,
+      a: object.a,
+      b: object.b,
+      c: object.c,
+      v: object.v,
+      p: object.p,
+      l: object.l,
+      h: object.h,
+      o: object.o,
+      sn: object.sn,
+      n: object.n,
+      iname: iname
+    });
+    // console.log(JSON.stringify(tick, null, 3));
+    // tick.sendToCompare();
+    tick.save(function(err, tick) {
+      if (err) return console.log(err);
+      console.log(`[SUCCESS][BITSTAMP]: ${tick.name} added to db!`);
+    });
+  });
 }, 1100);
-
 
 // *********************************************************************************************************************
 // *********************************************************************************************************************
 // *********************************************************************************************************************
 // *************************************** KRAKEN
 
-setInterval(async function () {
+setInterval(async function() {
   var list = ['XBTUSD']; //await getListKR();
   var data = await kraken(list);
-      data.forEach((object) => {
-        if (object.name === 'XXBTZUSD') {
-          var iname =  'btcusd'
-        } else {
-          var iname = 'N/A' };
-        var tick = new Krakentick({
-          mk: object.mk,
-          name: object.name,
-          a: object.a,
-          b: object.b,
-          c: object.c,
-          v: object.v,
-          p: object.p,
-          t: object.t,
-          l: object.l,
-          h: object.h,
-          o: object.o,
-          n: object.n,
-          iname: iname,
-          aAmt: object.aAmt,
-          bAmt: object.bAmt,
-          cAmt: object.cAmt,
-          v24: object.v24,
-          h24: object.h24,
-          l24: object.l24,
-          p24: object.p24,
-        });
-        // console.log(JSON.stringify(tick, null, 3));
-        // tick.sendToCompare();
-        tick.save(function(err, tick) {
-          if (err) return console.log(err);
-          console.log(`[SUCCESS][KRAKEN]: ${tick.name} added to db!`);
-        });
-      });
+  data.forEach(object => {
+    if (object.name === 'XXBTZUSD') {
+      var iname = 'btcusd';
+    } else {
+      var iname = 'N/A';
+    }
+    var tick = new Krakentick({
+      mk: object.mk,
+      name: object.name,
+      a: object.a,
+      b: object.b,
+      c: object.c,
+      v: object.v,
+      p: object.p,
+      t: object.t,
+      l: object.l,
+      h: object.h,
+      o: object.o,
+      n: object.n,
+      iname: iname,
+      aAmt: object.aAmt,
+      bAmt: object.bAmt,
+      cAmt: object.cAmt,
+      v24: object.v24,
+      h24: object.h24,
+      l24: object.l24,
+      p24: object.p24
+    });
+    // console.log(JSON.stringify(tick, null, 3));
+    // tick.sendToCompare();
+    tick.save(function(err, tick) {
+      if (err) return console.log(err);
+      console.log(`[SUCCESS][KRAKEN]: ${tick.name} added to db!`);
+    });
+  });
 }, 1500);
-
 
 // *********************************************************************************************************************
 // *********************************************************************************************************************
 // *********************************************************************************************************************
 // *************************************** BITFINEX
 
-setInterval(async function () {
+setInterval(async function() {
   var list = ['btcusd']; //await getList();
   var data = await bitfinex(list);
-      data.forEach((object) => {
-        if (object.name === 'btcusd') {
-          var iname = 'btcusd';
-        } else {
-          var iname = 'N/A';
-        }
-        var tick = new Bitfinextick({
-          mk: object.mk,
-          name: object.name,
-          a: object.a,
-          b: object.b,
-          m: object.m,
-          c: object.c,
-          v: object.v,
-          l: object.l,
-          h: object.h,
-          sn: object.sn,
-          n: object.n,
-          iname: iname,
-        });
-        tick.save(function(err, tick) {
-          if (err) return console.log(err);
-          console.log(`[SUCCESS][BITFINEX]: ${tick.name} added to db!`);
-        });
-      });
+  data.forEach(object => {
+    if (object.name === 'btcusd') {
+      var iname = 'btcusd';
+    } else {
+      var iname = 'N/A';
+    }
+    var tick = new Bitfinextick({
+      mk: object.mk,
+      name: object.name,
+      a: object.a,
+      b: object.b,
+      m: object.m,
+      c: object.c,
+      v: object.v,
+      l: object.l,
+      h: object.h,
+      sn: object.sn,
+      n: object.n,
+      iname: iname
+    });
+    tick.save(function(err, tick) {
+      if (err) return console.log(err);
+      console.log(`[SUCCESS][BITFINEX]: ${tick.name} added to db!`);
+    });
+  });
 }, 1500);
-
 
 // *********************************************************************************************************************
 // *********************************************************************************************************************
 // *********************************************************************************************************************
 // *************************************** ITBIT
 
-
-setInterval(async function () {
+setInterval(async function() {
   var list = ['XBTUSD']; //, 'xrpusd', 'ltcusd']; // ADAPT IF THE LIST GETS PUBLISHED BY BITSTAMP API REST
   var data = await itbit(list);
-      data.forEach((object) => {
-        if (object.name === 'XBTUSD') {
-          var iname = 'btcusd';
-        } else {
-          var iname = 'N/A';
-        }
-        var tick = new Itbittick({
-          mk: object.mk,
-          name: object.name,
-          a: object.a,
-          b: object.b,
-          c: object.c,
-          v: object.v,
-          p: object.p,
-          l: object.l,
-          h: object.h,
-          o: object.o,
-          sn: object.sn,
-          n: object.n,
-          iname: iname,
-          aAmt: object.aAmt,
-          bAmt: object.bAmt,
-          cAmt: object.cAmt,
-          v24: object.v24,
-          h24: object.h24,
-          l24: object.l24,
-          p24: object.p24,
-        });
-        tick.save(function(err, tick) {
-          if (err) return console.log(err);
-          console.log(`[SUCCESS][ITBIT]: ${tick.name} added to db!`);
-        });
-      });
-
+  data.forEach(object => {
+    if (object.name === 'XBTUSD') {
+      var iname = 'btcusd';
+    } else {
+      var iname = 'N/A';
+    }
+    var tick = new Itbittick({
+      mk: object.mk,
+      name: object.name,
+      a: object.a,
+      b: object.b,
+      c: object.c,
+      v: object.v,
+      p: object.p,
+      l: object.l,
+      h: object.h,
+      o: object.o,
+      sn: object.sn,
+      n: object.n,
+      iname: iname,
+      aAmt: object.aAmt,
+      bAmt: object.bAmt,
+      cAmt: object.cAmt,
+      v24: object.v24,
+      h24: object.h24,
+      l24: object.l24,
+      p24: object.p24
+    });
+    tick.save(function(err, tick) {
+      if (err) return console.log(err);
+      console.log(`[SUCCESS][ITBIT]: ${tick.name} added to db!`);
+    });
+  });
 }, 6000);
 
 // *********************************************************************************************************************
@@ -316,37 +309,35 @@ setInterval(async function () {
 // *********************************************************************************************************************
 // *************************************** BITTREX
 
-
-setInterval(async function () {
+setInterval(async function() {
   var list = ['USDT-BTC'];
   var data = await bittrex(list);
-      data.forEach((object) => {
-        if (object.name === 'USDT-BTC') {
-          var iname = 'btcusd';
-        } else {
-          var iname = 'N/A';
-        }
-        var tick = new Bittrextick({
-          mk: object.mk,
-          name: object.name,
-          a: object.a,
-          b: object.b,
-          c: object.c,
-          v: object.v,
-          p: object.p,
-          l: object.l,
-          h: object.h,
-          o: object.o,
-          sn: object.sn,
-          n: object.n,
-          iname: iname,
-          OpenBuyOrders: object.OpenBuyOrders,
-          OpenSellOrders: object.OpenSellOrders,
-        });
-        tick.save(function(err, tick) {
-          if (err) return console.log(err);
-          console.log(`[SUCCESS][BITTREX]: ${tick.name} added to db!`);
-        });
-      });
-
+  data.forEach(object => {
+    if (object.name === 'USDT-BTC') {
+      var iname = 'btcusd';
+    } else {
+      var iname = 'N/A';
+    }
+    var tick = new Bittrextick({
+      mk: object.mk,
+      name: object.name,
+      a: object.a,
+      b: object.b,
+      c: object.c,
+      v: object.v,
+      p: object.p,
+      l: object.l,
+      h: object.h,
+      o: object.o,
+      sn: object.sn,
+      n: object.n,
+      iname: iname,
+      OpenBuyOrders: object.OpenBuyOrders,
+      OpenSellOrders: object.OpenSellOrders
+    });
+    tick.save(function(err, tick) {
+      if (err) return console.log(err);
+      console.log(`[SUCCESS][BITTREX]: ${tick.name} added to db!`);
+    });
+  });
 }, 1100);
