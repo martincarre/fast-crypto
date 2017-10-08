@@ -6,10 +6,11 @@ const server = mongoose.connect('mongodb://localhost/cryptoCollection', {
 });
 
 const { Krakentick } = require('./kraken/model/krakenModel');
+const { Bitstamptick } = require('./bitstamp/model/bitstampModel');
 var now = Math.floor(new Date());
 
 function kquery() {
-  return new Promise(function(reslove, reject) {
+  return new Promise((resolve, reject) => {
     Krakentick.findOne(
       {
         iname: 'btcusd',
@@ -18,27 +19,37 @@ function kquery() {
       'mk c n',
       function(err, tick) {
         if (err) {
-          return console.log(err);
+          reject(err);
         } else {
-          return tick;
+          resolve(tick);
         }
       }
-    )(function(err, result) {
-      if (err) {
-        reject(err);
-      } else {
-        resolve(result);
-      }
-    });
+    );
   });
-  };
 }
 
-kquery();
+function bquery() {
+  Bitstamptick.findOne({}, {}, { sort: { created_at: -1 } }, function(
+    err,
+    tick
+  ) {
+    console.log(tick);
+  });
+}
+
+bquery();
 
 // async function compare() {
 //   var ktick = await kquery();
-//   console.log(ktick);
+//   var btick = await bquery();
+//   var dif = {
+//     difc: ktick.c - btick.c,
+//     ditn: ktick.n - btick.n,
+//     kn: ktick.n,
+//     bn: btick.n
+//   };
+
+//   console.log(JSON.stringify(dif, null, 3));
 // }
-//
+
 // compare();
