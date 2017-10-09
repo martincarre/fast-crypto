@@ -24,8 +24,7 @@ function kquery() {
     });
   });
 }
-
-async function compare() {
+setInterval(async function() {
   var ktick = await kquery();
   var btick = await bquery();
   var dif = {
@@ -33,11 +32,12 @@ async function compare() {
     ditn: ktick.n - btick.n,
     difa: ktick.a - btick.a,
     difb: ktick.b - btick.b,
+    kbaspread: ktick.a - ktick.b,
+    bbaspread: btick.a - btick.b,
+    baspread: ktick.a - btick.a - (ktick.b - btick.b),
     kn: ktick.n,
     bn: btick.n
   };
 
   console.log(JSON.stringify(dif, null, 3));
-}
-
-compare();
+}, 1100);
