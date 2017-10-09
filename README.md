@@ -15,4 +15,5 @@
  * **main.js:**
     - Improve the timeStamps since Mongoose supports it directly within the models: https://stackoverflow.com/questions/10006218/which-schematype-in-mongoose-is-best-for-timestamp.
 
- * **compare.js:** Working on comparing prices between markets and take positions. Include everything in a new DB or new collection. WORK IN PROGRESS
+ * **compare.js:**
+    - Working on comparing prices between markets and take positions. Include everything in a new DB or new collection. WORK IN PROGRESS
