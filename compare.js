@@ -11,7 +11,7 @@ var now = Math.floor(new Date());
 
 function bquery() {
   return new Promise((resolve, reject) => {
-    Bitstamptick.findOne({}, {}, { sort: { created_at: 1 } }, function(
+    Bitstamptick.findOne({}, {}, { sort: { created_at: -1 } }, function(
       err,
       tick
     ) {
@@ -22,7 +22,7 @@ function bquery() {
 
 function kquery() {
   return new Promise((resolve, reject) => {
-    Krakentick.findOne({}, {}, { sort: { created_at: 1 } }, function(
+    Krakentick.findOne({}, {}, { sort: { created_at: -1 } }, function(
       err,
       tick
     ) {
