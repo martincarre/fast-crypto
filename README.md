@@ -17,3 +17,7 @@
 
  * **compare.js:**
     - Working on comparing prices between markets and take positions. Include everything in a new DB or new collection. WORK IN PROGRESS
+
+## Other info:
+
+This is currently running on a Raspberry Pi 3 Model B.
