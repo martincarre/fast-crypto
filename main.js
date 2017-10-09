@@ -1,36 +1,37 @@
-var fs = require('fs');
-var mongo = require('mongodb');
-var mongoose = require('mongoose');
+const fs = require('fs');
+const mongo = require('mongodb');
+const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 
 // BITSTAMP REQUIRE:
-var bitstamp = require('./bitstamp/app.js').bitstamp;
-var Bitstamptick = require('./bitstamp/model/bitstampModel').Bitstamptick;
+const bitstamp = require('./bitstamp/app.js').bitstamp;
+const Bitstamptick = require('./bitstamp/model/bitstampModel').Bitstamptick;
 // KRAKEN REQUIRE:
-var kraken = require('./kraken/app.js').kraken;
-var getListKR = require('./kraken/app.js').getListKR;
-var Krakentick = require('./kraken/model/krakenModel').Krakentick;
+const kraken = require('./kraken/app.js').kraken;
+const getListKR = require('./kraken/app.js').getListKR;
+const Krakentick = require('./kraken/model/krakenModel').Krakentick;
 // BITFINEX REQUIRE:
-var bitfinex = require('./bitfinex/app.js').bitfinex;
-var getListBF = require('./bitfinex/app.js').getListBF;
-var Bitfinextick = require('./bitfinex/model/bitfinexModel').Bitfinextick;
+const bitfinex = require('./bitfinex/app.js').bitfinex;
+const getListBF = require('./bitfinex/app.js').getListBF;
+const Bitfinextick = require('./bitfinex/model/bitfinexModel').Bitfinextick;
 // COINDESK REQUIRE:
-var coindesk = require('./coindeskIndex/app.js').coindesk;
-var Coindesktick = require('./coindeskIndex/model/coindeskModel').Coindesktick;
+const coindesk = require('./coindeskIndex/app.js').coindesk;
+const Coindesktick = require('./coindeskIndex/model/coindeskModel')
+  .Coindesktick;
 // ITBIT REQUIRE:
-var itbit = require('./itbit/app.js').itbit;
-var Itbittick = require('./itbit/model/itbitModel').Itbittick;
+const itbit = require('./itbit/app.js').itbit;
+const Itbittick = require('./itbit/model/itbitModel').Itbittick;
 // CRYPTONATOR REQUIRE:
-var cryptonator = require('./cryptonatorindex/app.js').cryptonator;
-var Cryptonatortick = require('./cryptonatorindex/model/crytopnatorModel')
+const cryptonator = require('./cryptonatorindex/app.js').cryptonator;
+const Cryptonatortick = require('./cryptonatorindex/model/crytopnatorModel')
   .Cryptonatortick;
 // BLOCKCHAININFO REQUIRE:
-var blockchaininfo = require('./blockchaininfo/app.js').blockchaininfo;
-var Blockchaininfotick = require('./blockchaininfo/model/blockchaininfoModel')
+const blockchaininfo = require('./blockchaininfo/app.js').blockchaininfo;
+const Blockchaininfotick = require('./blockchaininfo/model/blockchaininfoModel')
   .Blockchaininfotick;
 // BITTREX REQUIRE:
-var bittrex = require('./bittrex/app.js').bittrex;
-var Bittrextick = require('./bittrex/model/bittrexModel').Bittrextick;
+const bittrex = require('./bittrex/app.js').bittrex;
+const Bittrextick = require('./bittrex/model/bittrexModel').Bittrextick;
 
 // *********************************************************************************************************************
 // *********************************************************************************************************************
