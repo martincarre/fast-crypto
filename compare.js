@@ -5,6 +5,8 @@ const server = mongoose.connect('mongodb://localhost/cryptoCollection', {
   useMongoClient: true
 });
 
+// NOTE: Importing the models for the queries
+
 const { Krakentick } = require('./kraken/model/krakenModel');
 const { Bitstamptick } = require('./bitstamp/model/bitstampModel');
 const { Bitfinextick } = require('./bitfinex/model/bitfinexModel');
