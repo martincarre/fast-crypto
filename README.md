@@ -20,4 +20,4 @@
 
 ## Other info:
 
-This is currently running on a Raspberry Pi 3 Model B.
+This is currently running on a Raspberry Pi 3 Model B with pi64 OS (for the mongodb support): https://github.com/bamarni/pi64
