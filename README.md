@@ -20,4 +20,5 @@
 
 ## Other info:
 
-This is currently running on a Raspberry Pi 3 Model B with pi64 OS (for the mongodb support): https://github.com/bamarni/pi64
+This is currently running on a Raspberry Pi 3 Model B with pi64 OS (for the mongodb support): https://github.com/bamarni/pi64.
+I seem to be having troubles with the Raspberry Pi and Mongodb. Everything works correctly up to some point. I believe that the raspberry memory is too low and that Mongodb crashes when it fills the RAM...
