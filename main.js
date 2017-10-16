@@ -13,6 +13,7 @@ const { kraken } = require('./kraken/app.js');
 const { getListKR } = require('./kraken/app.js');
 const { Krakentick } = require('./kraken/model/krakenModel');
 // BITFINEX REQUIRE:
+const bfnexorder = require('./bitfinex/app.js').order;
 const { bitfinex } = require('./bitfinex/app.js');
 const { getListBF } = require('./bitfinex/app.js');
 const { Bitfinextick } = require('./bitfinex/model/bitfinexModel');
@@ -240,8 +241,9 @@ setInterval(async function() {
 // *************************************** BITFINEX
 
 setInterval(async function() {
-  var list = ['btcusd']; //await getList();
+  var list = ['btcusd'];
   var data = await bitfinex(list);
+  var order = await bfnexorder('btcusd');
   data.forEach(object => {
     if (object.name === 'btcusd') {
       var iname = 'btcusd';
@@ -260,7 +262,8 @@ setInterval(async function() {
       h: object.h,
       sn: object.sn,
       n: object.n,
-      iname: iname
+      iname: iname,
+      order: order
     });
     tick.save(function(err, tick) {
       if (err) return console.log(err);

@@ -1,6 +1,6 @@
 var mongoose = require('mongoose');
-  mongoose.Promise = global.Promise;
-  require('mongoose-currency').loadType(mongoose);
+mongoose.Promise = global.Promise;
+require('mongoose-currency').loadType(mongoose);
 var Currency = mongoose.Types.Currency;
 
 // var compare = require('../../compare').compare;
@@ -18,6 +18,7 @@ var tickerSchema = mongoose.Schema({
   sn: Number,
   n: Number,
   iname: String,
+  order: Object
 });
 
 // tickerSchema.methods.sendToCompare = function () {
@@ -28,4 +29,4 @@ var Bitfinextick = mongoose.model('Bitfinextick', tickerSchema);
 
 module.exports = {
   Bitfinextick
-}
+};
