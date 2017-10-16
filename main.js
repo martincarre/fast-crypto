@@ -4,35 +4,37 @@ const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 
 // BITSTAMP REQUIRE:
-const bitstamp = require('./bitstamp/app.js').bitstamp;
-const Bitstamptick = require('./bitstamp/model/bitstampModel').Bitstamptick;
+const bsorder = require('./bitstamp/app.js').bsorder;
+const { bitstamp } = require('./bitstamp/app.js');
+const { Bitstamptick } = require('./bitstamp/model/bitstampModel');
 // KRAKEN REQUIRE:
 const { ksn } = require('./kraken/app.js');
-const kraken = require('./kraken/app.js').kraken;
-const getListKR = require('./kraken/app.js').getListKR;
-const Krakentick = require('./kraken/model/krakenModel').Krakentick;
+const { kraken } = require('./kraken/app.js');
+const { getListKR } = require('./kraken/app.js');
+const { Krakentick } = require('./kraken/model/krakenModel');
 // BITFINEX REQUIRE:
-const bitfinex = require('./bitfinex/app.js').bitfinex;
-const getListBF = require('./bitfinex/app.js').getListBF;
-const Bitfinextick = require('./bitfinex/model/bitfinexModel').Bitfinextick;
+const { bitfinex } = require('./bitfinex/app.js');
+const { getListBF } = require('./bitfinex/app.js');
+const { Bitfinextick } = require('./bitfinex/model/bitfinexModel');
 // COINDESK REQUIRE:
-const coindesk = require('./coindeskIndex/app.js').coindesk;
-const Coindesktick = require('./coindeskIndex/model/coindeskModel')
-  .Coindesktick;
+const { coindesk } = require('./coindeskIndex/app.js');
+const { Coindesktick } = require('./coindeskIndex/model/coindeskModel');
 // ITBIT REQUIRE:
-const itbit = require('./itbit/app.js').itbit;
-const Itbittick = require('./itbit/model/itbitModel').Itbittick;
+const { itbit } = require('./itbit/app.js');
+const { Itbittick } = require('./itbit/model/itbitModel');
 // CRYPTONATOR REQUIRE:
-const cryptonator = require('./cryptonatorindex/app.js').cryptonator;
-const Cryptonatortick = require('./cryptonatorindex/model/crytopnatorModel')
-  .Cryptonatortick;
+const { cryptonator } = require('./cryptonatorindex/app.js');
+const {
+  Cryptonatortick
+} = require('./cryptonatorindex/model/crytopnatorModel');
 // BLOCKCHAININFO REQUIRE:
-const blockchaininfo = require('./blockchaininfo/app.js').blockchaininfo;
-const Blockchaininfotick = require('./blockchaininfo/model/blockchaininfoModel')
-  .Blockchaininfotick;
+const { blockchaininfo } = require('./blockchaininfo/app.js');
+const {
+  Blockchaininfotick
+} = require('./blockchaininfo/model/blockchaininfoModel');
 // BITTREX REQUIRE:
-const bittrex = require('./bittrex/app.js').bittrex;
-const Bittrextick = require('./bittrex/model/bittrexModel').Bittrextick;
+const { bittrex } = require('./bittrex/app.js');
+const { Bittrextick } = require('./bittrex/model/bittrexModel');
 
 // *********************************************************************************************************************
 // *********************************************************************************************************************
@@ -153,6 +155,7 @@ setInterval(async function() {
 setInterval(async function() {
   var list = ['btcusd']; //, 'xrpusd', 'ltcusd']; // ADAPT IF THE LIST GETS PUBLISHED BY BITSTAMP API REST
   var data = await bitstamp(list);
+  var order = await bsorder(list);
   data.forEach(object => {
     if (object.name === 'btcusd') {
       var iname = 'btcusd';
@@ -172,10 +175,9 @@ setInterval(async function() {
       o: object.o,
       sn: object.sn,
       n: object.n,
-      iname: iname
+      iname: iname,
+      order: order
     });
-    // console.log(JSON.stringify(tick, null, 3));
-    // tick.sendToCompare();
     tick.save(function(err, tick) {
       if (err) return console.log(err);
       console.log(`[SUCCESS][BITSTAMP]: ${tick.name} added to db!`);
@@ -271,7 +273,7 @@ setInterval(async function() {
 // *************************************** ITBIT
 
 setInterval(async function() {
-  var list = ['XBTUSD']; //, 'xrpusd', 'ltcusd']; // ADAPT IF THE LIST GETS PUBLISHED BY BITSTAMP API REST
+  var list = ['XBTUSD'];
   var data = await itbit(list);
   data.forEach(object => {
     if (object.name === 'XBTUSD') {
