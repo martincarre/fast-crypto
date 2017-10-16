@@ -20,6 +20,7 @@ const { Bitfinextick } = require('./bitfinex/model/bitfinexModel');
 const { coindesk } = require('./coindeskIndex/app.js');
 const { Coindesktick } = require('./coindeskIndex/model/coindeskModel');
 // ITBIT REQUIRE:
+const itorder = require('./itbit/app.js').order;
 const { itbit } = require('./itbit/app.js');
 const { Itbittick } = require('./itbit/model/itbitModel');
 // CRYPTONATOR REQUIRE:
@@ -276,6 +277,7 @@ setInterval(async function() {
 setInterval(async function() {
   var list = ['XBTUSD'];
   var data = await itbit(list);
+  var order = await itorder('XBTUSD');
   data.forEach(object => {
     if (object.name === 'XBTUSD') {
       var iname = 'btcusd';
@@ -302,7 +304,8 @@ setInterval(async function() {
       v24: object.v24,
       h24: object.h24,
       l24: object.l24,
-      p24: object.p24
+      p24: object.p24,
+      order: order
     });
     tick.save(function(err, tick) {
       if (err) return console.log(err);
