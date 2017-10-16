@@ -15,6 +15,7 @@ var tickerSchema = mongoose.Schema({
   h: Currency,
   o: Currency,
   n: Number,
+  sn: Number,
   iname: String,
   aAmt: Number,
   bAmt: Number,

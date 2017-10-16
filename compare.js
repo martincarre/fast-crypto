@@ -114,12 +114,23 @@ setInterval(async function() {
     },
     // NOTE: END OF COMPARING BID ASK
 
-    // NOTE: Request time compare:
-    kn: ktick.n,
-    bsn: bstick.n,
-    itbn: itbtick.n,
-    brexn: brextick.n,
-    bfin: bfitick.n,
+    // NOTE: Request local-time compare:
+    n: {
+      kn: ktick.n,
+      bsn: bstick.n,
+      itbn: itbtick.n,
+      brexn: brextick.n,
+      bfin: bfitick.n
+    },
+
+    // NOTE: Request local-time compare:
+    sn: {
+      ksn: ktick.sn,
+      bssn: bstick.sn,
+      itbsn: itbtick.sn,
+      brexsn: brextick.sn,
+      bfisn: bfitick.sn
+    },
 
     // NOTE: _id of each tick for reference:
     qid: {

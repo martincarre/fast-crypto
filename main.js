@@ -7,6 +7,7 @@ mongoose.Promise = global.Promise;
 const bitstamp = require('./bitstamp/app.js').bitstamp;
 const Bitstamptick = require('./bitstamp/model/bitstampModel').Bitstamptick;
 // KRAKEN REQUIRE:
+const { ksn } = require('./kraken/app.js');
 const kraken = require('./kraken/app.js').kraken;
 const getListKR = require('./kraken/app.js').getListKR;
 const Krakentick = require('./kraken/model/krakenModel').Krakentick;
@@ -190,6 +191,7 @@ setInterval(async function() {
 setInterval(async function() {
   var list = ['XBTUSD']; //await getListKR();
   var data = await kraken(list);
+  var sn = await ksn();
   data.forEach(object => {
     if (object.name === 'XXBTZUSD') {
       var iname = 'btcusd';
@@ -209,6 +211,7 @@ setInterval(async function() {
       h: object.h,
       o: object.o,
       n: object.n,
+      sn: sn,
       iname: iname,
       aAmt: object.aAmt,
       bAmt: object.bAmt,

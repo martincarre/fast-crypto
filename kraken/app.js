@@ -2,41 +2,53 @@ var _ = require('lodash');
 
 var apiRequest = require('./apiRequest.js').apiRequest;
 
-
 // ******************** APP:
 
-  // ====== GET CRAWL LIST:
+// ====== GET CRAWL LIST:
 function getListKR() {
   var tickerArr = [];
-  return apiRequest('AssetPairs').then((data) => {
-    var list = data.body
+  return apiRequest('AssetPairs').then(data => {
+    var list = data.body;
     _.map(data.body, function(res) {
-      _.map(res , function(content) {
-      if (content.altname.indexOf('USD') !== -1 && content.altname.indexOf('.d') === -1) tickerArr.push(content.altname);
+      _.map(res, function(content) {
+        if (
+          content.altname.indexOf('USD') !== -1 &&
+          content.altname.indexOf('.d') === -1
+        )
+          tickerArr.push(content.altname);
       });
     });
     return tickerArr;
   });
-};
+}
 
-  // ====== GET TICKER DATA:
+// ====== GET TICKER DATA:
 function kraken(list) {
   return Promise.all(list.map(single))
-  .then((res) => {
-    return res;
-  }).catch((err) => {
-    console.log(err);
-  });
-};
+    .then(res => {
+      return res;
+    })
+    .catch(err => {
+      console.log(err);
+    });
+}
+// ===== GET SERVER TIME:
 
-  // ===== GET SINGLE TICKER AND ADAPT TO LAYOUT HANDLER:
+function ksn() {
+  return apiRequest('Time').then(data => {
+    return data.body.result.unixtime;
+  });
+}
+
+// ===== GET SINGLE TICKER AND ADAPT TO LAYOUT HANDLER:
 
 function single(item) {
-  return apiRequest('Ticker', {pair: item}).then((res) => {
+  return apiRequest('Ticker', { pair: item })
+    .then(res => {
       var result = {};
       var timeStamp = Math.floor(new Date());
-      Object.keys(res.body.result).forEach((k) => {
-        result= {
+      Object.keys(res.body.result).forEach(k => {
+        result = {
           mk: 'kraken',
           name: k,
           a: res.body.result[k].a[0],
@@ -55,16 +67,18 @@ function single(item) {
           v24: res.body.result[k].v[1],
           h24: res.body.result[k].h[1],
           l24: res.body.result[k].l[1],
-          p24: res.body.result[k].p[1],
-        }
+          p24: res.body.result[k].p[1]
+        };
       });
       return result;
-  }).catch((err) => {
-    console.log(err);
-  });
-};
+    })
+    .catch(err => {
+      console.log(err);
+    });
+}
 
 module.exports = {
   kraken,
-  getListKR
-}
+  getListKR,
+  ksn
+};
