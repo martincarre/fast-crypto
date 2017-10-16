@@ -12,11 +12,21 @@ function bittrex(list) {
 }
 
 // ====== GET ORDER DATA:
-
+function order(item) {
+  return apiRequest('getorderbook', {
+    market: item,
+    type: 'both'
+  }).then(res => {
+    return {
+      bids: res.body.result.buy,
+      asks: res.body.result.sell
+    };
+  });
+}
 // ===== GET SINGLE TICKER AND ADAPT TO LAYOUT HANDLER:
 
 function single(item) {
-  return apiRequest({ market: item })
+  return apiRequest('getmarketsummary', { market: item })
     .then(res => {
       var result = {};
       var timeStamp = Math.floor(new Date());
@@ -43,6 +53,9 @@ function single(item) {
     });
 }
 
+order('USDT-BTC');
+
 module.exports = {
-  bittrex
+  bittrex,
+  order
 };

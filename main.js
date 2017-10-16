@@ -33,6 +33,7 @@ const {
   Blockchaininfotick
 } = require('./blockchaininfo/model/blockchaininfoModel');
 // BITTREX REQUIRE:
+const brexorder = require('./bittrex/app.js').order;
 const { bittrex } = require('./bittrex/app.js');
 const { Bittrextick } = require('./bittrex/model/bittrexModel');
 
@@ -318,6 +319,7 @@ setInterval(async function() {
 setInterval(async function() {
   var list = ['USDT-BTC'];
   var data = await bittrex(list);
+  var order = await brexorder('USDT-BTC');
   data.forEach(object => {
     if (object.name === 'USDT-BTC') {
       var iname = 'btcusd';
@@ -339,7 +341,8 @@ setInterval(async function() {
       n: object.n,
       iname: iname,
       OpenBuyOrders: object.OpenBuyOrders,
-      OpenSellOrders: object.OpenSellOrders
+      OpenSellOrders: object.OpenSellOrders,
+      order: order
     });
     tick.save(function(err, tick) {
       if (err) return console.log(err);
