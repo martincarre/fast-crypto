@@ -53,8 +53,6 @@ function single(item) {
     });
 }
 
-order('USDT-BTC');
-
 module.exports = {
   bittrex,
   order
