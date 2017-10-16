@@ -23,7 +23,8 @@ var tickerSchema = mongoose.Schema({
   v24: Currency,
   h24: Currency,
   l24: Currency,
-  p24: Currency
+  p24: Currency,
+  order: Object
 });
 
 var Krakentick = mongoose.model('Krakentick', tickerSchema);

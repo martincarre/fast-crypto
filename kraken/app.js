@@ -2,8 +2,6 @@ var _ = require('lodash');
 
 var apiRequest = require('./apiRequest.js').apiRequest;
 
-// ******************** APP:
-
 // ====== GET CRAWL LIST:
 function getListKR() {
   var tickerArr = [];
@@ -37,6 +35,16 @@ function kraken(list) {
 function ksn() {
   return apiRequest('Time').then(data => {
     return data.body.result.unixtime;
+  });
+}
+
+// ===== GET ORDER DATA:
+function order(item) {
+  return apiRequest('Depth', { pair: item }).then(res => {
+    return {
+      bids: res.body.result.XXBTZUSD.bids,
+      asks: res.body.result.XXBTZUSD.asks
+    };
   });
 }
 
@@ -80,5 +88,6 @@ function single(item) {
 module.exports = {
   kraken,
   getListKR,
-  ksn
+  ksn,
+  order
 };

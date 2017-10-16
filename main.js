@@ -8,6 +8,7 @@ const bsorder = require('./bitstamp/app.js').bsorder;
 const { bitstamp } = require('./bitstamp/app.js');
 const { Bitstamptick } = require('./bitstamp/model/bitstampModel');
 // KRAKEN REQUIRE:
+const korder = require('./kraken/app.js').order;
 const { ksn } = require('./kraken/app.js');
 const { kraken } = require('./kraken/app.js');
 const { getListKR } = require('./kraken/app.js');
@@ -196,6 +197,7 @@ setInterval(async function() {
 setInterval(async function() {
   var list = ['XBTUSD']; //await getListKR();
   var data = await kraken(list);
+  var order = await korder('XBTUSD');
   var sn = await ksn();
   data.forEach(object => {
     if (object.name === 'XXBTZUSD') {
@@ -224,7 +226,8 @@ setInterval(async function() {
       v24: object.v24,
       h24: object.h24,
       l24: object.l24,
-      p24: object.p24
+      p24: object.p24,
+      order: order
     });
     // console.log(JSON.stringify(tick, null, 3));
     // tick.sendToCompare();
@@ -270,7 +273,7 @@ setInterval(async function() {
       console.log(`[SUCCESS][BITFINEX]: ${tick.name} added to db!`);
     });
   });
-}, 1100);
+}, 2000);
 
 // *********************************************************************************************************************
 // *********************************************************************************************************************
