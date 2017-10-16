@@ -11,6 +11,7 @@
  * **Market Requests:**
     - The error logs are not working properly ==> NOT WORKING FOR SOME OBSCURE REASON. NOT VITAL TO THE PROGRAM BUT IT WOULD BE GREAT IF WE COULD INCLUDE SOME KIND OF AUTOMATIC MAIL SENT FROM THE SERVER IN CASE OF A PROBLEM.
     - Not able to include *Exmo* market yet. Problem with the returned data: Gives an array that I would have to save each items separately. The solution might reside in giving a Map function to save each ticker separately... Still have to work on it.
+    - The requests are not optimized as is since I'm only doing requests on a single market. There's no need for an array anymore but at this point, I don't feel like redoing the code to delete the list option (array). Plus, it might be usefull in the future... The only thing is that for the order book I didn't adapt. The "list" is "hardcoded"
 
  * **main.js:**
     - Improve the timeStamps since Mongoose supports it directly within the models: https://stackoverflow.com/questions/10006218/which-schematype-in-mongoose-is-best-for-timestamp.
