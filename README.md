@@ -18,6 +18,7 @@
 
  * **compare.js:**
     - Working on comparing prices between markets and take positions. Include everything in a new DB or new collection. WORK IN PROGRESS
+    - At the moment, I'm only querying the DB and then creating a new record but I need to be able to reference some of the information from the data that already exists in the DB... For instance, the orderbooks are both being saved under each respective ticker and then in the compRecord. I need to find out how I can use references instead of duplicating the data.
 
 ## Other info:
 
