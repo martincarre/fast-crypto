@@ -17,12 +17,27 @@ function order(item) {
     market: item,
     type: 'both'
   }).then(res => {
-    return {
-      bids: res.body.result.buy,
-      asks: res.body.result.sell
-    };
+    var arr = [];
+    Object.keys(res.body.result).forEach(k => {
+      var first = res.body.result[k];
+      first.forEach(o => {
+        var p = o.Rate;
+        var v = o.Quantity;
+        var sn = Math.trunc(Math.floor(new Date()) / 1000);
+        var type = k;
+        var result = {
+          type: type,
+          p: p,
+          v: v,
+          sn: sn
+        };
+        arr.push(result);
+      });
+    });
+    return arr;
   });
 }
+
 // ===== GET SINGLE TICKER AND ADAPT TO LAYOUT HANDLER:
 
 function single(item) {

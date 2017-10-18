@@ -19,7 +19,7 @@ var tickerSchema = mongoose.Schema({
   iname: String,
   OpenBuyOrders: Number,
   OpenSellOrders: Number,
-  order: Object
+  order: Array
 });
 
 var Bittrextick = mongoose.model('Bittrextick', tickerSchema);

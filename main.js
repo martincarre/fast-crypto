@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 
 // BITSTAMP REQUIRE:
-const bsorder = require('./bitstamp/app.js').bsorder;
+const bsorder = require('./bitstamp/app.js').order;
 const { bitstamp } = require('./bitstamp/app.js');
 const { Bitstamptick } = require('./bitstamp/model/bitstampModel');
 // KRAKEN REQUIRE:
@@ -229,8 +229,6 @@ setInterval(async function() {
       p24: object.p24,
       order: order
     });
-    // console.log(JSON.stringify(tick, null, 3));
-    // tick.sendToCompare();
     tick.save(function(err, tick) {
       if (err) return console.log(err);
       console.log(`[SUCCESS][KRAKEN]: ${tick.name} added to db!`);
