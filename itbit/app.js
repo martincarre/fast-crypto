@@ -13,10 +13,24 @@ function itbit(list) {
 // ===== GET ORDER DATA:
 function order(item) {
   return apiRequest(item, 'order_book').then(res => {
-    return {
-      bids: res.body.bids,
-      asks: res.body.asks
-    };
+    var arr = [];
+    Object.keys(res.body).forEach(k => {
+      var first = res.body[k];
+      first.forEach(o => {
+        var p = o[0];
+        var v = o[1];
+        var sn = Math.trunc(Math.floor(new Date()) / 1000);
+        var type = k;
+        var result = {
+          type: type,
+          p: p,
+          v: v,
+          sn: sn
+        };
+        arr.push(result);
+      });
+    });
+    return arr;
   });
 }
 

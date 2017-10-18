@@ -24,7 +24,7 @@ var tickerSchema = mongoose.Schema({
   h24: Currency,
   l24: Currency,
   p24: Currency,
-  order: Object
+  order: Array
 });
 
 var Itbittick = mongoose.model('Itbittick', tickerSchema);
