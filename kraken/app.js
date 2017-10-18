@@ -41,10 +41,24 @@ function ksn() {
 // ===== GET ORDER DATA:
 function order(item) {
   return apiRequest('Depth', { pair: item }).then(res => {
-    return {
-      bids: res.body.result.XXBTZUSD.bids,
-      asks: res.body.result.XXBTZUSD.asks
-    };
+    var arr = [];
+    Object.keys(res.body.result.XXBTZUSD).forEach(k => {
+      var first = res.body.result.XXBTZUSD[k];
+      first.forEach(o => {
+        var p = o[0];
+        var v = o[1];
+        var sn = o[2];
+        var type = k;
+        var result = {
+          type: type,
+          p: p,
+          v: v,
+          sn: sn
+        };
+        arr.push(result);
+      });
+    });
+    return arr;
   });
 }
 
