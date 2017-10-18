@@ -19,7 +19,7 @@ var tickerSchema = mongoose.Schema({
   sn: Number,
   n: Number,
   iname: String,
-  order: Object
+  order: Array
 });
 
 // tickerSchema.methods.sendToCompare = function () {

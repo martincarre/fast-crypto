@@ -12,12 +12,28 @@ function bitstamp(list) {
 }
 
 // ====== GET ORDERBOOK DATA:
-function bsorder(item) {
+function order(item) {
   return apiRequest('order_book', item).then(res => {
-    return {
-      bids: res.body.bids,
-      asks: res.body.asks
-    };
+    var arr = [];
+    Object.keys(res.body).forEach(k => {
+      var first = res.body[k];
+      if (k !== 'timestamp') {
+        first.forEach(o => {
+          var p = o[0];
+          var v = o[1];
+          var sn = res.body.timestamp;
+          var type = k;
+          var result = {
+            type: type,
+            p: p,
+            v: v,
+            sn: sn
+          };
+          arr.push(result);
+        });
+      }
+    });
+    return arr;
   });
 }
 
@@ -53,5 +69,5 @@ function single(item) {
 
 module.exports = {
   bitstamp,
-  bsorder
+  order
 };
