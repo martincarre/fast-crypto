@@ -28,10 +28,23 @@ function bitfinex(list) {
 // ====== GET ORDER DATA:
 function order(item) {
   return apiRequest('book', item).then(res => {
-    return {
-      bids: res.body.bids,
-      asks: res.body.asks
-    };
+    var arr = [];
+    Object.keys(res.body).forEach(k => {
+      Object.keys(res.body[k]).forEach(o => {
+        var p = res.body[k][o].price;
+        var v = res.body[k][o].amount;
+        var sn = res.body[k][o].timestamp;
+        var type = k;
+        var result = {
+          type: type,
+          p: p,
+          v: v,
+          sn: sn
+        };
+        arr.push(result);
+      });
+    });
+    return arr;
   });
 }
 

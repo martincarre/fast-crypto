@@ -24,6 +24,15 @@ const { Bittrextick } = require('./bittrex/model/bittrexModel');
 var minimumGain = 5;
 var totalGain = [];
 
+// NOTE: Check Functions
+isArray = function(a) {
+  return !!a && a.constructor === Array;
+};
+
+isObject = function(a) {
+  return !!a && a.constructor === Object;
+};
+
 // NOTE: Query the Mongodb to get the latest imports from APIs.
 
 function bsquery() {
@@ -183,11 +192,11 @@ setInterval(async function() {
 
     // NOTE: Order book for each ticker:
     ob: {
-      k_ob: ktick.order,
-      bs_ob: bstick.order,
-      itb_ob: itbtick.order,
-      brex_ob: brextick.order,
-      bfi_ob: bfitick.order
+      kraken: ktick.order,
+      bitstamp: bstick.order,
+      itbit: itbtick.order,
+      bittrex: brextick.order,
+      bitfinex: bfitick.order
     }
   });
 
@@ -199,10 +208,22 @@ setInterval(async function() {
   Object.keys(dif.comp).forEach(k => {
     Object.keys(dif.comp[k]).forEach(p => {
       if (dif.comp[k][p].g / 100 > minimumGain) {
+        var buyMk = dif.comp[k][p].a;
+        var sellMk = dif.comp[k][p].b;
+        var orderBuy = dif.ob[buyMk];
         console.log(
-          `Buy with ${dif.comp[k][p].a} and Sell with ${dif.comp[k][p]
-            .b} for $${dif.comp[k][p].g / 100}`
+          `Buy with ${buyMk} and Sell with ${sellMk} for $${dif.comp[k][p].g /
+            100}`
         );
+        if (isObject(orderBuy)) {
+          var test = buyMk.bid;
+          if (isObject(test)) {
+            var test = buyMk.bid
+          }
+        } else if (isArray(orderBuy))) {
+          console.log(buyMk[1]);
+        }
+
       }
     });
   });
