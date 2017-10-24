@@ -16,7 +16,7 @@ var tickerSchema = mongoose.Schema({
   sn: Number,
   n: Number,
   iname: String,
-  order: Array
+  order: Object
 });
 
 var Bitfinextick = mongoose.model('Bitfinextick', tickerSchema);

@@ -28,23 +28,44 @@ function bitfinex(list) {
 // ====== GET ORDER DATA:
 function order(item) {
   return apiRequest('book', item).then(res => {
-    var arr = [];
+    var asks = [];
+    var bids = [];
     Object.keys(res.body).forEach(k => {
-      Object.keys(res.body[k]).forEach(o => {
-        var p = res.body[k][o].price;
-        var v = res.body[k][o].amount;
-        var sn = res.body[k][o].timestamp;
-        var type = k;
-        var result = {
-          type: type,
-          p: p,
-          v: v,
-          sn: sn
-        };
-        arr.push(result);
-      });
+      if (k === 'asks') {
+        Object.keys(res.body[k]).forEach(o => {
+          var p = res.body[k][o].price;
+          var v = res.body[k][o].amount;
+          var sn = res.body[k][o].timestamp;
+          var type = k;
+          var ask = {
+            type: type,
+            p: p,
+            v: v,
+            sn: sn
+          };
+          asks.push(ask);
+        });
+      } else if (k === 'bids') {
+        Object.keys(res.body[k]).forEach(o => {
+          var p = res.body[k][o].price;
+          var v = res.body[k][o].amount;
+          var sn = res.body[k][o].timestamp;
+          var type = k;
+          var bid = {
+            type: type,
+            p: p,
+            v: v,
+            sn: sn
+          };
+          bids.push(bid);
+        });
+      }
     });
-    return arr;
+    var ob = {
+      asks: asks,
+      bids: bids
+    };
+    return ob;
   });
 }
 

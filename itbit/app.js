@@ -13,24 +13,45 @@ function itbit(list) {
 // ===== GET ORDER DATA:
 function order(item) {
   return apiRequest(item, 'order_book').then(res => {
-    var arr = [];
+    var bids = [];
+    var asks = [];
     Object.keys(res.body).forEach(k => {
       var first = res.body[k];
-      first.forEach(o => {
-        var p = o[0];
-        var v = o[1];
-        var sn = Math.trunc(Math.floor(new Date()) / 1000);
-        var type = k;
-        var result = {
-          type: type,
-          p: p,
-          v: v,
-          sn: sn
-        };
-        arr.push(result);
-      });
+      if (k === 'bids') {
+        first.forEach(o => {
+          var p = o[0];
+          var v = o[1];
+          var sn = Math.trunc(Math.floor(new Date()) / 1000);
+          var type = k;
+          var bid = {
+            type: type,
+            p: p,
+            v: v,
+            sn: sn
+          };
+          bids.push(bid);
+        });
+      } else if (k === 'asks') {
+        first.forEach(o => {
+          var p = o[0];
+          var v = o[1];
+          var sn = Math.trunc(Math.floor(new Date()) / 1000);
+          var type = k;
+          var ask = {
+            type: type,
+            p: p,
+            v: v,
+            sn: sn
+          };
+          asks.push(ask);
+        });
+      }
     });
-    return arr;
+    var ob = {
+      asks: asks,
+      bids: bids
+    };
+    return ob;
   });
 }
 

@@ -14,26 +14,45 @@ function bitstamp(list) {
 // ====== GET ORDERBOOK DATA:
 function order(item) {
   return apiRequest('order_book', item).then(res => {
-    var arr = [];
+    var bids = [];
+    var asks = [];
     Object.keys(res.body).forEach(k => {
       var first = res.body[k];
-      if (k !== 'timestamp') {
+      if (k === 'bids') {
         first.forEach(o => {
           var p = o[0];
           var v = o[1];
           var sn = res.body.timestamp;
           var type = k;
-          var result = {
+          var bid = {
             type: type,
             p: p,
             v: v,
             sn: sn
           };
-          arr.push(result);
+          bids.push(bid);
+        });
+      } else if (k === 'asks') {
+        first.forEach(o => {
+          var p = o[0];
+          var v = o[1];
+          var sn = res.body.timestamp;
+          var type = k;
+          var ask = {
+            type: type,
+            p: p,
+            v: v,
+            sn: sn
+          };
+          asks.push(ask);
         });
       }
     });
-    return arr;
+    var ob = {
+      asks: asks,
+      bids: bids
+    };
+    return ob;
   });
 }
 

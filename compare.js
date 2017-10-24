@@ -24,15 +24,6 @@ const { Bittrextick } = require('./bittrex/model/bittrexModel');
 var minimumGain = 5;
 var totalGain = [];
 
-// NOTE: Check Functions
-isArray = function(a) {
-  return !!a && a.constructor === Array;
-};
-
-isObject = function(a) {
-  return !!a && a.constructor === Object;
-};
-
 // NOTE: Query the Mongodb to get the latest imports from APIs.
 
 function bsquery() {
@@ -215,15 +206,7 @@ setInterval(async function() {
           `Buy with ${buyMk} and Sell with ${sellMk} for $${dif.comp[k][p].g /
             100}`
         );
-        if (isObject(orderBuy)) {
-          var test = buyMk.bid;
-          if (isObject(test)) {
-            var test = buyMk.bid
-          }
-        } else if (isArray(orderBuy))) {
-          console.log(buyMk[1]);
-        }
-
+        console.log(JSON.stringify(orderBuy, null, 2));
       }
     });
   });

@@ -17,24 +17,45 @@ function order(item) {
     market: item,
     type: 'both'
   }).then(res => {
-    var arr = [];
+    var asks = [];
+    var bids = [];
     Object.keys(res.body.result).forEach(k => {
       var first = res.body.result[k];
-      first.forEach(o => {
-        var p = o.Rate;
-        var v = o.Quantity;
-        var sn = Math.trunc(Math.floor(new Date()) / 1000);
-        var type = k;
-        var result = {
-          type: type,
-          p: p,
-          v: v,
-          sn: sn
-        };
-        arr.push(result);
-      });
+      if (k === 'buy') {
+        first.forEach(o => {
+          var p = o.Rate;
+          var v = o.Quantity;
+          var sn = Math.trunc(Math.floor(new Date()) / 1000);
+          var type = 'asks';
+          var ask = {
+            type: type,
+            p: p,
+            v: v,
+            sn: sn
+          };
+          asks.push(ask);
+        });
+      } else if (k === 'sell') {
+        first.forEach(o => {
+          var p = o.Rate;
+          var v = o.Quantity;
+          var sn = Math.trunc(Math.floor(new Date()) / 1000);
+          var type = 'bids';
+          var bid = {
+            type: type,
+            p: p,
+            v: v,
+            sn: sn
+          };
+          bids.push(bid);
+        });
+      }
     });
-    return arr;
+    var ob = {
+      asks: asks,
+      bids: bids
+    };
+    return ob;
   });
 }
 
