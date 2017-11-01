@@ -10,6 +10,7 @@ var orderTPSchema = mongoose.Schema({
   pBid: Number,
   bidMk: String,
   askMk: String,
+  snDif: Number,
   sn: Number
 });
 

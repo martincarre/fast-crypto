@@ -105,7 +105,9 @@ setInterval(async function() {
           bidMk: 'ktickbid',
           askMk: 'bfitickask',
           vbid: orderBook.ktickbid.v,
-          vask: orderBook.bfitickask.v
+          vask: orderBook.bfitickask.v,
+          snbid: orderBook.ktickbid.sn,
+          snask: orderBook.bfitickask.sn
         },
         comp_abfibbs: {
           pbid: orderBook.bstickbid.p,
@@ -115,7 +117,9 @@ setInterval(async function() {
           bidMk: 'bstickbid',
           askMk: 'bfitickask',
           vbid: orderBook.bstickbid.v,
-          vask: orderBook.bfitickask.v
+          vask: orderBook.bfitickask.v,
+          snbid: orderBook.bstickbid.sn,
+          snask: orderBook.bfitickask.sn
         },
         comp_abfibitb: {
           pbid: orderBook.itbtickbid.p,
@@ -125,7 +129,9 @@ setInterval(async function() {
           bidMk: 'itbtickbid',
           askMk: 'bfitickask',
           vbid: orderBook.itbtickbid.v,
-          vask: orderBook.bfitickask.v
+          vask: orderBook.bfitickask.v,
+          snbid: orderBook.itbtickbid.sn,
+          snask: orderBook.bfitickask.sn
         },
         comp_abfibbrex: {
           pbid: orderBook.brextickbid.p,
@@ -135,7 +141,9 @@ setInterval(async function() {
           bidMk: 'brextickbid',
           askMk: 'bfitickask',
           vbid: orderBook.brextickbid.v,
-          vask: orderBook.bfitickask.v
+          vask: orderBook.bfitickask.v,
+          snbid: orderBook.brextickbid.sn,
+          snask: orderBook.bfitickask.sn
         },
         sreadbfiba: {
           pbid: orderBook.bfitickbid.p,
@@ -154,7 +162,9 @@ setInterval(async function() {
           bidMk: 'ktickbid',
           askMk: 'brextickask',
           vbid: orderBook.ktickbid.v,
-          vask: orderBook.brextickask.v
+          vask: orderBook.brextickask.v,
+          snbid: orderBook.ktickbid.sn,
+          snask: orderBook.brextickask.sn
         },
         comp_abrexbbs: {
           pbid: orderBook.bstickbid.p,
@@ -164,7 +174,9 @@ setInterval(async function() {
           bidMk: 'bstickbid',
           askMk: 'brextickask',
           vbid: orderBook.bstickbid.v,
-          vask: orderBook.brextickask.v
+          vask: orderBook.brextickask.v,
+          snbid: orderBook.bstickbid.sn,
+          snask: orderBook.brextickask.sn
         },
         comp_abrexbitb: {
           pbid: orderBook.itbtickbid.p,
@@ -174,7 +186,9 @@ setInterval(async function() {
           bidMk: 'itbtickbid',
           askMk: 'brextickask',
           vbid: orderBook.itbtickbid.v,
-          vask: orderBook.brextickask.v
+          vask: orderBook.brextickask.v,
+          snbid: orderBook.itbtickbid.sn,
+          snask: orderBook.brextickask.sn
         },
         comp_abrexbbfi: {
           pbid: orderBook.bfitickbid.p,
@@ -184,7 +198,9 @@ setInterval(async function() {
           bidMk: 'bfitickbid',
           askMk: 'brextickask',
           vbid: orderBook.bfitickbid.v,
-          vask: orderBook.brextickask.v
+          vask: orderBook.brextickask.v,
+          snbid: orderBook.bfitickbid.sn,
+          snask: orderBook.brextickask.sn
         },
         sreadbrexba: {
           pbid: orderBook.brextickbid.p,
@@ -203,7 +219,9 @@ setInterval(async function() {
           bidMk: 'bstickbid',
           askMk: 'ktickask',
           vbid: orderBook.bstickbid.v,
-          vask: orderBook.ktickask.v
+          vask: orderBook.ktickask.v,
+          snbid: orderBook.bstickbid.sn,
+          snask: orderBook.ktickask.sn
         },
         comp_akbitb: {
           pbid: orderBook.itbtickbid.p,
@@ -213,7 +231,9 @@ setInterval(async function() {
           bidMk: 'itbtickbid',
           askMk: 'ktickask',
           vbid: orderBook.itbtickbid.v,
-          vask: orderBook.ktickask.v
+          vask: orderBook.ktickask.v,
+          snbid: orderBook.itbtickbid.sn,
+          snask: orderBook.ktickask.sn
         },
         comp_akbbrex: {
           pbid: orderBook.brextickbid.p,
@@ -223,7 +243,9 @@ setInterval(async function() {
           bidMk: 'brextickbid',
           askMk: 'ktickask',
           vbid: orderBook.brextickbid.v,
-          vask: orderBook.ktickask.v
+          vask: orderBook.ktickask.v,
+          snbid: orderBook.brextickbid.sn,
+          snask: orderBook.ktickask.sn
         },
         comp_akbbfi: {
           pbid: orderBook.bfitickbid.p,
@@ -233,7 +255,9 @@ setInterval(async function() {
           bidMk: 'bfitickbid',
           askMk: 'ktickask',
           vbid: orderBook.bfitickbid.v,
-          vask: orderBook.ktickask.v
+          vask: orderBook.ktickask.v,
+          snbid: orderBook.bfitickbid.sn,
+          snask: orderBook.ktickask.sn
         },
         spreadkba: {
           pbid: orderBook.ktickbid.p,
@@ -252,7 +276,9 @@ setInterval(async function() {
           bidMk: 'brextickbid',
           askMk: 'itbtickask',
           vbid: orderBook.brextickbid.v,
-          vask: orderBook.itbtickask.v
+          vask: orderBook.itbtickask.v,
+          snbid: orderBook.brextickbid.sn,
+          snask: orderBook.itbtickask.sn
         },
         comp_aitbbk: {
           pbid: orderBook.ktickbid.p,
@@ -262,7 +288,9 @@ setInterval(async function() {
           bidMk: 'ktickbid',
           askMk: 'itbtickask',
           vbid: orderBook.ktickbid.v,
-          vask: orderBook.itbtickask.v
+          vask: orderBook.itbtickask.v,
+          snbid: orderBook.ktickbid.sn,
+          snask: orderBook.itbtickask.sn
         },
         comp_aitbbbs: {
           pbid: orderBook.bstickbid.p,
@@ -272,7 +300,9 @@ setInterval(async function() {
           bidMk: 'bstickbid',
           askMk: 'itbtickask',
           vbid: orderBook.bstickbid.v,
-          vask: orderBook.itbtickask.v
+          vask: orderBook.itbtickask.v,
+          snbid: orderBook.bstickbid.sn,
+          snask: orderBook.itbtickask.sn
         },
         comp_aitbbfi: {
           pbid: orderBook.bfitickbid.p,
@@ -282,7 +312,9 @@ setInterval(async function() {
           bidMk: 'bfitickbid',
           askMk: 'itbtickask',
           vbid: orderBook.bfitickbid.v,
-          vask: orderBook.itbtickask.v
+          vask: orderBook.itbtickask.v,
+          snbid: orderBook.bfitickbid.sn,
+          snask: orderBook.itbtickask.sn
         },
         spreaditb: {
           pbid: orderBook.itbtickbid.p,
@@ -301,7 +333,9 @@ setInterval(async function() {
           bidMk: 'itbtickbid',
           askMk: 'bstickask',
           vbid: orderBook.itbtickbid.v,
-          vask: orderBook.bstickask.v
+          vask: orderBook.bstickask.v,
+          snbid: orderBook.itbtickbid.sn,
+          snask: orderBook.bstickask.sn
         },
         comp_absbk: {
           pbid: orderBook.ktickbid.p,
@@ -311,7 +345,9 @@ setInterval(async function() {
           bidMk: 'ktickbid',
           askMk: 'bstickask',
           vbid: orderBook.ktickbid.v,
-          vask: orderBook.bstickask.v
+          vask: orderBook.bstickask.v,
+          snbid: orderBook.ktickbid.sn,
+          snask: orderBook.bstickask.sn
         },
         comp_absbbrex: {
           pbid: orderBook.brextickbid.p,
@@ -321,7 +357,9 @@ setInterval(async function() {
           bidMk: 'brextickbid',
           askMk: 'bstickask',
           vbid: orderBook.brextickbid.v,
-          vask: orderBook.bstickask.v
+          vask: orderBook.bstickask.v,
+          snbid: orderBook.brextickbid.sn,
+          snask: orderBook.bstickask.sn
         },
         comp_absbbfi: {
           pbid: orderBook.bfitickbid.p,
@@ -331,7 +369,9 @@ setInterval(async function() {
           bidMk: 'bfitickbid',
           askMk: 'bstickask',
           vbid: orderBook.bfitickbid.v,
-          vask: orderBook.bstickask.v
+          vask: orderBook.bstickask.v,
+          snbid: orderBook.bfitickbid.sn,
+          snask: orderBook.bstickask.sn
         },
         spread_bsba: {
           pbid: orderBook.bstickbid.p,
@@ -368,6 +408,7 @@ setInterval(async function() {
           pBid: dif.comp[k][p].pbid,
           bidMk: dif.comp[k][p].bidMk,
           askMk: dif.comp[k][p].askMk,
+          snDif: dif.comp[k][p].snbid - dif.comp[k][p].snask,
           sn: refsn
         });
 
@@ -376,8 +417,30 @@ setInterval(async function() {
         newOrder.save(function(err, dif) {
           if (err) return console.log(err);
           console.log('Order to be passed saved!');
+
+          // NOTE: Getting everything into an Array for manipulation:
+          orderTP.push(newOrder);
         });
       }
     });
   });
+  orderTP.map(x => {
+    if (x.volBid < x.volAsk) {
+      var orderBuy = x.volBid * x.pAsk;
+      var orderSell = x.volBid * x.pBid;
+      console.log(
+        `Buy @ $${x.pAsk} & Sell @$${x.pBid} - Profit: ${orderSell - orderBuy}`
+      );
+    } else if (x.volAsk < x.volBid) {
+      var orderBuy = x.volAsk * x.pAsk;
+      var orderSell = x.volAsk * x.pBid;
+      console.log(
+        `Buy @ $${x.pAsk} & Sell @$${x.pBid} - Profit: ${orderSell - orderBuy}`
+      );
+    }
+  });
+  // NOTE: ToDo:
+  // - volAsk > volBid
+  // - pDif max
+  // - snDif min
 }, 1100);
