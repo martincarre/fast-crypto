@@ -4,6 +4,8 @@ mongoose.Promise = global.Promise;
 const server = mongoose.connect('mongodb://localhost/cryptoCollection', {
   useMongoClient: true
 });
+const { hasMax } = require('./external');
+const { hasMin } = require('./external');
 
 // NOTE: Model for saving the comps:
 const { compRecord } = require('./models/compModel');
@@ -23,6 +25,7 @@ const { Bittrextick } = require('./bittrex/model/bittrexModel');
 // NOTE: Other VAR Declarations:
 var minimumGain = 5;
 var totalGain = [];
+var maxTimeout = 5;
 
 // NOTE: Query the Mongodb to get the latest imports from APIs.
 
@@ -75,139 +78,265 @@ setInterval(async function() {
   var brextick = await brexquery();
   var bfitick = await bfiquery();
 
+  // NOTE: Order Variables:
+  var orderBook = {
+    ktickbid: ktick.order.bids.hasMax('p'),
+    ktickask: ktick.order.asks.hasMin('p'),
+    bstickbid: bstick.order.bids.hasMax('p'),
+    bstickask: bstick.order.asks.hasMin('p'),
+    itbtickbid: itbtick.order.bids.hasMax('p'),
+    itbtickask: itbtick.order.asks.hasMin('p'),
+    brextickbid: brextick.order.bids.hasMax('p'),
+    brextickask: brextick.order.asks.hasMin('p'),
+    bfitickbid: bfitick.order.bids.hasMax('p'),
+    bfitickask: bfitick.order.asks.hasMin('p')
+  };
+
   var dif = new compRecord({
-    // NOTE: MUST EACH OF THE CATEGORIES MUST HAVE AS MANY COMPs AS THERE ARE TICKS
-    iname: ktick.iname,
-    // NOTE: bfitick *****
     comp: {
       bfiask: {
-        comp_abfibk: { b: 'kraken', a: 'bitfinex', g: ktick.b - bfitick.a },
-        comp_abfibbs: { b: 'bitstamp', a: 'bitfinex', g: bstick.b - bfitick.a },
-        comp_abfibitb: { b: 'itbit', a: 'bitfinex', g: itbtick.b - bfitick.a },
-        comp_abfibbrex: {
-          b: 'bittrex',
-          a: 'bitfinex',
-          g: brextick.b * 100 - bfitick.a
+        comp_abfibk: {
+          pdif: orderBook.ktickbid.p - orderBook.bfitickask.p,
+          sndif: orderBook.ktickbid.sn - orderBook.bfitickask.sn,
+          bidMk: 'ktickbid',
+          askMk: 'bfitickask',
+          vbid: orderBook.ktickbid.v,
+          vask: orderBook.bfitickask.v
         },
-        sreadbfiba: bfitick.b - bfitick.a
+        comp_abfibbs: {
+          pdif: orderBook.bstickbid.p - orderBook.bfitickask.p,
+          sndif: orderBook.bstickbid.sn - orderBook.bfitickask.sn,
+          bidMk: 'bstickbid',
+          askMk: 'bfitickask',
+          vbid: orderBook.bstickbid.v,
+          vask: orderBook.bfitickask.v
+        },
+        comp_abfibitb: {
+          pdif: orderBook.itbtickbid.p - orderBook.bfitickask.p,
+          sndif: orderBook.itbtickbid.sn - orderBook.bfitickask.sn,
+          bidMk: 'itbtickbid',
+          askMk: 'bfitickask',
+          vbid: orderBook.itbtickbid.v,
+          vask: orderBook.bfitickask.v
+        },
+        comp_abfibbrex: {
+          pdif: orderBook.brextickbid.p - orderBook.bfitickask.p,
+          sndif: orderBook.brextickbid.sn - orderBook.bfitickask.sn,
+          bidMk: 'brextickbid',
+          askMk: 'bfitickask',
+          vbid: orderBook.brextickbid.v,
+          vask: orderBook.bfitickask.v
+        },
+        sreadbfiba: {
+          pdif: orderBook.bfitickbid.p - orderBook.bfitickask.p,
+          vbid: orderBook.bfitickbid.v,
+          vask: orderBook.bfitickask.v
+        }
       },
-      // NOTE: brextick *****
       brexask: {
         comp_abrexbk: {
-          b: 'kraken',
-          a: 'bittrex',
-          g: ktick.b - brextick.a * 100
+          pdif: orderBook.ktickbid.p - orderBook.brextickask.p,
+          sndif: orderBook.ktickbid.sn - orderBook.brextickask.sn,
+          bidMk: 'ktickbid',
+          askMk: 'brextickask',
+          vbid: orderBook.ktickbid.v,
+          vask: orderBook.brextickask.v
         },
         comp_abrexbbs: {
-          b: 'bitstamp',
-          a: 'bittrex',
-          g: bstick.b - brextick.a * 100
+          pdif: orderBook.bstickbid.p - orderBook.brextickask.p,
+          sndif: orderBook.bstickbid.sn - orderBook.brextickask.sn,
+          bidMk: 'bstickbid',
+          askMk: 'brextickask',
+          vbid: orderBook.bstickbid.v,
+          vask: orderBook.brextickask.v
         },
         comp_abrexbitb: {
-          b: 'itbit',
-          a: 'bittrex',
-          g: itbtick.b - brextick.a * 100
+          pdif: orderBook.itbtickbid.p - orderBook.brextickask.p,
+          sndif: orderBook.itbtickbid.sn - orderBook.brextickask.sn,
+          bidMk: 'itbtickbid',
+          askMk: 'brextickask',
+          vbid: orderBook.itbtickbid.v,
+          vask: orderBook.brextickask.v
         },
-        compa_abrexbbfi: {
-          b: 'bitfinex',
-          a: 'bittrex',
-          g: bfitick.b - brextick.a * 100
+        comp_abrexbbfi: {
+          pdif: orderBook.bfitickbid.p - orderBook.brextickask.p,
+          sndif: orderBook.bfitickbid.sn - orderBook.brextickask.sn,
+          bidMk: 'bfitickbid',
+          askMk: 'brextickask',
+          vbid: orderBook.bfitickbid.v,
+          vask: orderBook.brextickask.v
         },
-        sreadbrexba: brextick.b * 100 - brextick.a * 100
+        sreadbrexba: {
+          pdif: orderBook.brextickbid.p - orderBook.brextickask.p,
+          vbid: orderBook.brextickbid.v,
+          vask: orderBook.brextickask.v
+        }
       },
-      // NOTE: ktick *****
       kask: {
-        comp_akbbs: { b: 'bitstamp', a: 'kraken', g: bstick.b - ktick.a },
-        comp_akbitb: { b: 'itbit', a: 'kraken', g: itbtick.b - ktick.a },
-        comp_akbbrex: {
-          b: 'bittrex',
-          a: 'kraken',
-          g: brextick.b * 100 - ktick.a
+        comp_akbbs: {
+          pdif: orderBook.bstickbid.p - orderBook.ktickask.p,
+          sndif: orderBook.bstickbid.sn - orderBook.ktickask.sn,
+          bidMk: 'bstickbid',
+          askMk: 'ktickask',
+          vbid: orderBook.bstickbid.v,
+          vask: orderBook.ktickask.v
         },
-        comp_akbbfi: { b: 'bitfinex', a: 'kraken', g: bfitick.b - ktick.a },
-        spreadkba: ktick.b - ktick.a
+        comp_akbitb: {
+          pdif: orderBook.itbtickbid.p - orderBook.ktickask.p,
+          sndif: orderBook.itbtickbid.sn - orderBook.ktickask.sn,
+          bidMk: 'itbtickbid',
+          askMk: 'ktickask',
+          vbid: orderBook.itbtickbid.v,
+          vask: orderBook.ktickask.v
+        },
+        comp_akbbrex: {
+          pdif: orderBook.brextickbid.p - orderBook.ktickask.p,
+          sndif: orderBook.brextickbid.sn - orderBook.ktickask.sn,
+          bidMk: 'brextickbid',
+          askMk: 'ktickask',
+          vbid: orderBook.brextickbid.v,
+          vask: orderBook.ktickask.v
+        },
+        comp_akbbfi: {
+          pdif: orderBook.bfitickbid.p - orderBook.ktickask.p,
+          sndif: orderBook.bfitickbid.sn - orderBook.ktickask.sn,
+          bidMk: 'bfitickbid',
+          askMk: 'ktickask',
+          vbid: orderBook.bfitickbid.v,
+          vask: orderBook.ktickask.v
+        },
+        spreadkba: {
+          pdif: orderBook.ktickbid.p - orderBook.ktickask.p,
+          vbid: orderBook.ktickbid.v,
+          vask: orderBook.ktickask.v
+        }
       },
-      // NOTE: itbtick ****
       itbask: {
         comp_aitbbbrex: {
-          b: 'bittrex',
-          a: 'itbit',
-          g: brextick.b * 100 - itbtick.a
+          pdif: orderBook.brextickbid.p - orderBook.itbtickask.p,
+          sndif: orderBook.brextickbid.sn - orderBook.itbtickask.sn,
+          bidMk: 'brextickbid',
+          askMk: 'itbtickask',
+          vbid: orderBook.brextickbid.v,
+          vask: orderBook.itbtickask.v
         },
-        comp_aitbbk: { b: 'kraken', a: 'itbit', g: ktick.b - itbtick.a },
-        comp_aitbbbs: { b: 'bitstamp', a: 'itbit', g: bstick.b - itbtick.a },
-        comp_aitbbfi: { b: 'bitfinex', a: 'itbit', g: bfitick.b - itbtick.a },
-        spreaditb: itbtick.b - itbtick.a
+        comp_aitbbk: {
+          pdif: orderBook.ktickbid.p - orderBook.itbtickask.p,
+          sndif: orderBook.ktickbid.sn - orderBook.itbtickask.sn,
+          bidMk: 'ktickbid',
+          askMk: 'itbtickask',
+          vbid: orderBook.ktickbid.v,
+          vask: orderBook.itbtickask.v
+        },
+        comp_aitbbbs: {
+          pdif: orderBook.bstickbid.p - orderBook.itbtickask.p,
+          sndif: orderBook.bstickbid.sn - orderBook.itbtickask.sn,
+          bidMk: 'bstickbid',
+          askMk: 'itbtickask',
+          vbid: orderBook.bstickbid.v,
+          vask: orderBook.itbtickask.v
+        },
+        comp_aitbbfi: {
+          pdif: orderBook.bfitickbid.p - orderBook.itbtickask.p,
+          sndif: orderBook.bfitickbid.sn - orderBook.itbtickask.sn,
+          bidMk: 'bfitickbid',
+          askMk: 'itbtickask',
+          vbid: orderBook.bfitickbid.v,
+          vask: orderBook.itbtickask.v
+        },
+        spreaditb: {
+          pdif: orderBook.itbtickbid.p - orderBook.itbtickask.p,
+          vbid: orderBook.itbtickbid.v,
+          vask: orderBook.itbtickask.v
+        }
       },
-      // NOTE: bstick ****
       bsask: {
-        comp_absbitb: { b: 'itbit', a: 'bitstamp', g: itbtick.b - bstick.a },
-        comp_absbk: { b: 'kraken', a: 'bitstamp', g: ktick.b - bstick.a },
-        comp_absbbrex: {
-          b: 'bittrex',
-          a: 'bitstamp',
-          g: brextick.b * 100 - bstick.a
+        comp_absbitb: {
+          pdif: orderBook.itbtickbid.p - orderBook.bstickask.p,
+          sndif: orderBook.itbtickbid.sn - orderBook.bstickask.sn,
+          bidMk: 'itbtickbid',
+          askMk: 'bstickask',
+          vbid: orderBook.itbtickbid.v,
+          vask: orderBook.bstickask.v
         },
-        comp_absbbfi: { b: 'bitfinex', a: 'bitstamp', g: bfitick.b - bstick.a },
-        spread_bsba: bstick.b - bstick.a
+        comp_absbk: {
+          pdif: orderBook.ktickbid.p - orderBook.bstickask.p,
+          sndif: orderBook.ktickbid.sn - orderBook.bstickask.sn,
+          bidMk: 'ktickbid',
+          askMk: 'bstickask',
+          vbid: orderBook.ktickbid.v,
+          vask: orderBook.bstickask.v
+        },
+        comp_absbbrex: {
+          pdif: orderBook.brextickbid.p - orderBook.bstickask.p,
+          sndif: orderBook.brextickbid.sn - orderBook.bstickask.sn,
+          bidMk: 'brextickbid',
+          askMk: 'bstickask',
+          vbid: orderBook.brextickbid.v,
+          vask: orderBook.bstickask.v
+        },
+        comp_absbbfi: {
+          pdif: orderBook.bfitickbid.p - orderBook.bstickask.p,
+          sndif: orderBook.bfitickbid.sn - orderBook.bstickask.sn,
+          bidMk: 'bfitickbid',
+          askMk: 'bstickask',
+          vbid: orderBook.bfitickbid.v,
+          vask: orderBook.bstickask.v
+        },
+        spread_bsba: {
+          pdif: orderBook.bstickbid.p - orderBook.bstickask.p,
+          vbid: orderBook.bstickbid.v,
+          vask: orderBook.bstickask.v
+        }
       }
-    },
-    // NOTE: END OF COMPARING BID ASK
-
-    // NOTE: Request local-time compare:
-    n: {
-      kn: ktick.n,
-      bsn: bstick.n,
-      itbn: itbtick.n,
-      brexn: brextick.n,
-      bfin: bfitick.n
-    },
-
-    // NOTE: Request local-time compare:
-    sn: {
-      ksn: ktick.sn,
-      bssn: bstick.sn,
-      itbsn: itbtick.sn,
-      brexsn: brextick.sn,
-      bfisn: bfitick.sn
-    },
-
-    // NOTE: _id of each tick for reference:
-    qid: {
-      k_id: ktick._id,
-      bs_id: bstick._id,
-      itb_id: itbtick._id,
-      brex_id: brextick._id,
-      bfi_id: bfitick._id
-    },
-
-    // NOTE: Order book for each ticker:
-    ob: {
-      kraken: ktick.order,
-      bitstamp: bstick.order,
-      itbit: itbtick.order,
-      bittrex: brextick.order,
-      bitfinex: bfitick.order
     }
-  });
-
-  dif.save(function(err, dif) {
-    if (err) return console.log(err);
-    console.log('Comparision instance saved!');
   });
 
   Object.keys(dif.comp).forEach(k => {
     Object.keys(dif.comp[k]).forEach(p => {
-      if (dif.comp[k][p].g / 100 > minimumGain) {
-        var buyMk = dif.comp[k][p].a;
-        var sellMk = dif.comp[k][p].b;
-        var orderBuy = dif.ob[buyMk];
+      if (
+        dif.comp[k][p].pdif >= minimumGain &&
+        dif.comp[k][p].sndif <= maxTimeout
+      ) {
+        var volAsk = dif.comp[k][p].vask;
+        var volBid = dif.comp[k][p].vbid;
+        var pDif = dif.comp[k][p].pdif;
         console.log(
-          `Buy with ${buyMk} and Sell with ${sellMk} for $${dif.comp[k][p].g /
-            100}`
+          `${volBid} available to buy and ${volAsk} available to sell for $${pDif}`
         );
-        console.log(JSON.stringify(orderBuy, null, 2));
       }
     });
   });
+
+  // dif.save(function(err, dif) {
+  //   if (err) return console.log(err);
+  //   console.log('Comparision instance saved!');
+  // });
+
+  // Object.keys(dif.comp).forEach(k => {
+  //   Object.keys(dif.comp[k]).forEach(p => {
+  //     if (dif.comp[k][p].g / 100 > minimumGain) {
+  //       var buyMk = dif.comp[k][p].a;
+  //       var sellMk = dif.comp[k][p].b;
+  //       var orderBuy = dif.ob[buyMk];
+  //       var orderSell = dif.ob[sellMk];
+  //       console.log(
+  //         `Buy with ${buyMk} and Sell with ${sellMk} for $${dif.comp[k][p].g /
+  //           100}`
+  //       );
+  //       var shoot = orderBuy.bids.hasMax('p');
+  //       // var shootsn = shoot.sn;
+  //       var plux = orderSell.asks.hasMin('p');
+  //       // var pluxsn = plux.sn;
+  //       console.log(`Buy: ${shoot.p} / Sell ${plux.p}`);
+  //       var delta = plux.p - shoot.p;
+  //       console.log('Real difference between mks: $', delta);
+  //       // console.log(
+  //       //   `Timestamp difference: ${shootsn -
+  //       //     pluxsn} (buy - sell) -- Buy:${shootsn} // Sell:${pluxsn}`
+  //       // );
+  //       // console.log(dif.qid);
+  //     }
+  //   });
+  // });
 }, 1100);

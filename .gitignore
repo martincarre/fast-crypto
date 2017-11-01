@@ -4,3 +4,4 @@ node_modules/
 playground*
 logs/*
 !logs/.gitkeep
+previous

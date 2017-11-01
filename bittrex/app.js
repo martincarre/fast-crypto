@@ -26,20 +26,6 @@ function order(item) {
           var p = o.Rate;
           var v = o.Quantity;
           var sn = Math.trunc(Math.floor(new Date()) / 1000);
-          var type = 'asks';
-          var ask = {
-            type: type,
-            p: p,
-            v: v,
-            sn: sn
-          };
-          asks.push(ask);
-        });
-      } else if (k === 'sell') {
-        first.forEach(o => {
-          var p = o.Rate;
-          var v = o.Quantity;
-          var sn = Math.trunc(Math.floor(new Date()) / 1000);
           var type = 'bids';
           var bid = {
             type: type,
@@ -48,6 +34,20 @@ function order(item) {
             sn: sn
           };
           bids.push(bid);
+        });
+      } else if (k === 'sell') {
+        first.forEach(o => {
+          var p = o.Rate;
+          var v = o.Quantity;
+          var sn = Math.trunc(Math.floor(new Date()) / 1000);
+          var type = 'asks';
+          var ask = {
+            type: type,
+            p: p,
+            v: v,
+            sn: sn
+          };
+          asks.push(ask);
         });
       }
     });
