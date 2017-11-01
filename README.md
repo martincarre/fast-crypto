@@ -17,10 +17,10 @@
     - Improve the timeStamps since Mongoose supports it directly within the models: https://stackoverflow.com/questions/10006218/which-schematype-in-mongoose-is-best-for-timestamp.
 
  * **compare.js:**
-    - Working on comparing prices between markets and take positions. Include everything in a new DB or new collection. WORK IN PROGRESS
-    - At the moment, I'm only querying the DB and then creating a new record but I need to be able to reference(populate) some of the information from the data that already exists in the DB... For instance, the orderbooks are both being saved under each respective ticker and then in the compRecord. I need to find out how I can use references(populate) instead of duplicating the data. -- For this I could rearrange the data located in comp to include the _id. --
+    - Working on taking the positions. Orders were included in a dedicated collection: next step is trying to compare volumes and select the adequate markets. WORK IN PROGRESS
 
 ## Other info:
 
 This is currently running on a Raspberry Pi 3 Model B with pi64 OS (for the mongodb support): https://github.com/bamarni/pi64.
 I seem to be having troubles with the Raspberry Pi and Mongodb. Everything works correctly up to some point. I believe that the raspberry memory is too low and that Mongodb crashes when it fills the RAM...
+-- UPDATE: Definitely fills up the RAM. The more information the raspberry is working with the faster the mongo instance crashes... --
